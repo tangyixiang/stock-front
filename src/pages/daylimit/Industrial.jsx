@@ -4,11 +4,20 @@ import { useState, useEffect } from 'react';
 
 function Industrial(props) {
 
-  const { data, click } = props
+  const { data, click, total, date } = props
   const [allIndustrial, setAllIndustrial] = useState([])
 
   useEffect(() => {
     const tempArray = []
+    const all = <Button.Group key='all'>
+      <Button size='xs' radius='lg' variant="gradient" gradient={{ from: 'orange', to: 'red' }} onClick={() => click('all')} >
+        全部
+      </Button>
+      <Button size='xs' radius='lg' variant="gradient" gradient={{ from: 'orange', to: 'red' }} >
+        {total}
+      </Button>
+    </Button.Group>
+    tempArray.push(all)
     for (let k in data) {
       const temp = <Button.Group key={k}>
         <Button
@@ -36,10 +45,10 @@ function Industrial(props) {
   }, [data])
 
   return (
-    <div style={{ margin: '20px 20px 0 20px', background: '#FFF' }}>
+    <div style={{ background: '#FFF', margin: '0px 20px', overflow: 'hidden', borderRadius: '4px' }}>
       <Accordion variant="filled"  >
         <Accordion.Item value='industrial' style={{ background: '#FFF' }}>
-          <Accordion.Control>行业分布</Accordion.Control>
+          <Accordion.Control>行业分布(日期: {date} 总数：{total})</Accordion.Control>
           <Accordion.Panel>
             <Group>
               {allIndustrial}

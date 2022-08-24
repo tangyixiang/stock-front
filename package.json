@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@antv/g2plot": "^2.4.20",
     "@emotion/react": "^11.9.3",
     "@mantine/core": "^5.0.0",
+    "@mantine/ds": "^5.2.0",
     "@mantine/hooks": "^5.0.0",
     "@tabler/icons": "^1.78.1",
     "antd": "^4.22.0",
