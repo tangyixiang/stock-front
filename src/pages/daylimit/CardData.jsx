@@ -1,4 +1,4 @@
-import { Card, Badge, Text, Tabs, Group, ActionIcon, Button, Modal } from '@mantine/core';
+import { Card, Badge, Text, Tabs, Group, ActionIcon, Button, Modal, Container } from '@mantine/core';
 import { createContext, useState } from 'react';
 import CompanyInfo from '../../components/CompanyInfo';
 import SText from '../../components/SText';
@@ -12,7 +12,7 @@ function CardData(props) {
 
 
   return (
-    <div style={{ width: '280px', margin: '20px' }}>
+    <Container size={280} px={10} pt={20}>
       <CardContext.Provider value={obj}>
         <Card withBorder shadow="sm" radius="sm" p="lg" >
           {/* <Card.Section withBorder inheritPadding py="xs">
@@ -67,7 +67,7 @@ function CardData(props) {
           <CompanyInfo data={obj} />
         </Modal>
       </CardContext.Provider>
-    </div>
+    </Container>
   );
 }
 

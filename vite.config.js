@@ -11,7 +11,8 @@ export default defineConfig({
       //这里是通过请求/api 来转发到 https://api.pingping6.com/
       //假如你要请求https://api.*.com/a/a
       //那么axios的url，可以配置为 /api/a/a
-      '/stock': 'http://110.42.230.38:8000/'
+      '/stock': 'http://110.42.230.38:8000/',
+      '/summary': 'http://110.42.230.38:8000/'
     }
   }
 })

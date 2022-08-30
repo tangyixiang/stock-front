@@ -1,15 +1,21 @@
 import React, { useState } from 'react'
-import Summary from './pages/company/Summary';
-import StockCard from './pages/daylimit/LimitPool';
-import { AppShell } from '@mantine/core';
+import { AppShell, Container } from '@mantine/core';
 import SNavBar from './components/SNavBar';
-import Home from './components/Home';
+import SHeader from './components/SHeader';
+import { Outlet } from 'react-router-dom';
 
 
 function App(props) {
 
   return (
-    <Home />
+    <AppShell
+      header={<SHeader />}
+      navbar={<SNavBar />}
+    >
+      <Container size="xl" px="xs">
+        <Outlet />
+      </Container>
+    </AppShell>
   )
 }
 

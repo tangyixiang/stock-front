@@ -45,7 +45,7 @@ function Industrial(props) {
   }, [data])
 
   return (
-    <div style={{ background: '#FFF', margin: '0px 20px', overflow: 'hidden', borderRadius: '4px' }}>
+    <div style={{ overflow: 'hidden', borderRadius: '4px' }}>
       <Accordion variant="filled"  >
         <Accordion.Item value='industrial' style={{ background: '#FFF' }}>
           <Accordion.Control>行业分布(日期: {date} 总数：{total})</Accordion.Control>
