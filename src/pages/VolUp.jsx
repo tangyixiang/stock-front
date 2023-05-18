@@ -18,7 +18,7 @@ const VolUp = () => {
   const today = dayjs().format('YYYY-MM-DD')
 
   const [category, setCategory] = useState([])
-  const [date, setDate] = useState()
+  const [date, setDate] = useState(today)
   const [activeIndex, setActiveIndex] = useState(-1) // 初始状态为 -1，表示没有 Button 被激活
   const [stockData, setStockData] = useState()
 
