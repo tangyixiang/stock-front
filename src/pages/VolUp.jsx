@@ -3,7 +3,7 @@ import {
   Space,
   DatePicker,
   Button,
-  Card,
+  Collapse,
   message,
   Col,
   Row,
@@ -11,7 +11,6 @@ import {
 } from 'antd'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import StockData from '../components/StockData'
 import StockCard from '../components/StockCard'
 
 const VolUp = () => {
@@ -51,6 +50,13 @@ const VolUp = () => {
       })
   }
 
+  const { Panel } = Collapse
+  const text = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+  `
+
   return (
     <>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
@@ -64,19 +70,21 @@ const VolUp = () => {
             查询
           </Button>
         </Space>
-        <Row>
-          {category.map((item, index) => (
-            <Button
-              className="m-1"
-              value={item}
-              key={index}
-              type={activeIndex === index ? 'primary' : 'default'}
-              onClick={() => getData(index, item)}
-            >
-              {item}
-            </Button>
-          ))}
-        </Row>
+        <Collapse>
+          <Panel header="行业" key="1">
+            {category.map((item, index) => (
+              <Button
+                className="m-1"
+                value={item}
+                key={index}
+                type={activeIndex === index ? 'primary' : 'default'}
+                onClick={() => getData(index, item)}
+              >
+                {item}
+              </Button>
+            ))}
+          </Panel>
+        </Collapse>
         <Divider />
         <Row gutter={[16, 16]}>
           {stockData &&
