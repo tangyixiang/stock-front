@@ -15,12 +15,12 @@ import StockData from '../components/StockData'
 import StockCard from '../components/StockCard'
 
 const VolUp = () => {
+  const today = dayjs().format('YYYY-MM-DD')
+
   const [category, setCategory] = useState([])
   const [date, setDate] = useState()
   const [activeIndex, setActiveIndex] = useState(-1) // 初始状态为 -1，表示没有 Button 被激活
   const [stockData, setStockData] = useState()
-
-  const today = dayjs().format('YYYY-MM-DD')
 
   const selectDate = (date, dateString) => {
     setDate(dateString)
