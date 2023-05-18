@@ -3,6 +3,7 @@ import { init, dispose, LineType } from 'klinecharts'
 
 function StockData(props) {
   const chart = useRef()
+  const paneId = useRef('')
   const id = useId()
 
   useEffect(() => {
@@ -13,6 +14,8 @@ function StockData(props) {
     })
 
     chart.current = init(id)
+    paneId.current = chart.current?.createIndicator('VOL', false)
+    chart.current?.createIndicator('BOLL', false, { id: 'candle_pane' })
     chart.current?.applyNewData(data)
     return () => {
       dispose(id)
