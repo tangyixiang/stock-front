@@ -16,9 +16,11 @@ import StockCard from '../components/StockCard'
 
 const VolUp = () => {
   const [category, setCategory] = useState([])
-  const [date, setDate] = useState('2023-05-17')
+  const [date, setDate] = useState()
   const [activeIndex, setActiveIndex] = useState(-1) // 初始状态为 -1，表示没有 Button 被激活
   const [stockData, setStockData] = useState()
+
+  const today = dayjs().format('YYYY-MM-DD')
 
   const selectDate = (date, dateString) => {
     setDate(dateString)
@@ -55,7 +57,7 @@ const VolUp = () => {
         <Space size={'large'}>
           <DatePicker
             onChange={selectDate}
-            defaultValue={dayjs('2023-05-17', 'YYYY-MM-DD')}
+            defaultValue={dayjs(today, 'YYYY-MM-DD')}
             format={'YYYY-MM-DD'}
           />
           <Button type="primary" onClick={getCategory}>
