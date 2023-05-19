@@ -21,6 +21,25 @@ const barStyle = {
       show: false,
     },
     tooltip: { showRule: 'none' },
+    indicator: {
+      tooltip: {
+        showRule: 'none',
+      },
+
+      bars: [
+        {
+          // 'fill' | 'stroke' | 'stroke_fill'
+          style: 'fill',
+          // 'solid' | 'dashed'
+          borderStyle: 'solid',
+          borderSize: 1,
+          borderDashedValue: [2, 2],
+          upColor: 'rgba(244, 110, 107, .7)',
+          downColor: 'rgba(0, 168, 67, .7)',
+          noChangeColor: '#888888',
+        },
+      ],
+    },
   },
 }
 
@@ -37,7 +56,8 @@ function StockData(props) {
     })
 
     chart.current = init(id)
-    paneId.current = chart.current?.createIndicator('VOL', false)
+    // paneId.current = chart.current?.createIndicator('VOL', true)
+    chart.current?.createIndicator('VOL', true)
     chart.current?.createIndicator('BOLL', false, { id: 'candle_pane' })
     chart.current?.applyNewData(data)
     return () => {
