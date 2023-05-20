@@ -17,28 +17,37 @@ const barStyle = {
       downWickColor: '#00A843',
       noChangeWickColor: '#888888',
     },
-    xAxis: {
-      show: false,
-    },
-    tooltip: { showRule: 'none' },
-    indicator: {
-      tooltip: {
-        showRule: 'none',
+    tooltip: {
+      showRule: 'follow_cross',
+      showType: 'rect',
+      rect: {
+        position: 'fixed',
       },
-
-      bars: [
-        {
-          // 'fill' | 'stroke' | 'stroke_fill'
-          style: 'fill',
-          // 'solid' | 'dashed'
-          borderStyle: 'solid',
-          borderSize: 1,
-          borderDashedValue: [2, 2],
-          upColor: 'rgba(244, 110, 107, .7)',
-          downColor: 'rgba(0, 168, 67, .7)',
-          noChangeColor: '#888888',
-        },
-      ],
+    },
+  },
+  indicator: {
+    bars: [
+      {
+        // 'fill' | 'stroke' | 'stroke_fill'
+        style: 'fill',
+        // 'solid' | 'dashed'
+        borderStyle: 'solid',
+        borderSize: 1,
+        borderDashedValue: [2, 2],
+        upColor: 'rgb(241, 62, 58)',
+        downColor: 'rgb(0, 168, 67)',
+        noChangeColor: '#888888',
+      },
+    ],
+    tooltip: {
+      showRule: 'none',
+      showType: 'rect',
+    },
+  },
+  yAxis: {
+    show: false,
+    tickLine: {
+      show: false,
     },
   },
 }
@@ -69,7 +78,7 @@ function StockData(props) {
     chart.current?.setStyles(barStyle)
   }, [])
 
-  return <div ref={chart} id={id} className="h-64 w-full" />
+  return <div ref={chart} id={id} className="h-80 w-full" />
   // style={{ width: '620px', height: '440px' }}
 }
 

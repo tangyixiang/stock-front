@@ -12,12 +12,8 @@ const App = () => {
       </Sider>
       <Layout>
         <Header className="p-0 bg-white" />
-        <Content
-          style={{
-            margin: '24px 16px 0',
-          }}
-        >
-          <div className="bg-white p-4">
+        <Content>
+          <div className="bg-white p-2">
             <Outlet />
           </div>
         </Content>

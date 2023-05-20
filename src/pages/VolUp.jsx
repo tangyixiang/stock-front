@@ -84,7 +84,7 @@ const VolUp = () => {
         <Row gutter={[16, 16]}>
           {stockData &&
             stockData.list.map((symbolData) => (
-              <Col xs={24} sm={12} xxl={8} key={symbolData.symbol}>
+              <Col xs={24} sm={24} xxl={8} key={symbolData.symbol}>
                 <StockCard data={symbolData} />
               </Col>
             ))}
