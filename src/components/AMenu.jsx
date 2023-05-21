@@ -12,13 +12,16 @@ function createItem(label, key, icon, children, type) {
   }
 }
 
-const items = [createItem('量价分析', '/volup')]
+const items = [
+  createItem('公司列表', '/symbol/list'),
+  createItem('量价分析', '/volup'),
+]
 
 function AMenu() {
   const navigate = useNavigate()
   return (
     <Menu
-      className="p-1"
+      className="py-4"
       theme="dark"
       mode="inline"
       defaultSelectedKeys={['4']}

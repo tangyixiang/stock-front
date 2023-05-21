@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import {
   Space,
   DatePicker,
+  Typography,
   Button,
-  Collapse,
   message,
   Col,
   Row,
   Divider,
+  Select,
+  Spin,
 } from 'antd'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -18,7 +20,7 @@ const VolUp = () => {
 
   const [category, setCategory] = useState([])
   const [date, setDate] = useState(today)
-  const [activeIndex, setActiveIndex] = useState(-1) // 初始状态为 -1，表示没有 Button 被激活
+  const [loading, setLoading] = useState(false) // 初始状态为 -1，表示没有 Button 被激活
   const [stockData, setStockData] = useState()
 
   const selectDate = (date, dateString) => {
@@ -32,12 +34,17 @@ const VolUp = () => {
           date: date,
         },
       })
-      .then((res) => setCategory(res.data))
+      .then((res) => {
+        const category = res.data.map((item) => {
+          return { label: item, value: item }
+        })
+        setCategory(category)
+      })
       .catch((error) => message.error('网络错误'))
   }
 
-  const getData = (index, item) => {
-    setActiveIndex(index)
+  const getData = (item) => {
+    setLoading(true)
     axios
       .get('/api/cn/vol/up', {
         params: {
@@ -47,41 +54,33 @@ const VolUp = () => {
       })
       .then((res) => {
         setStockData(res.data)
+        setLoading(false)
       })
   }
-
-  const { Panel } = Collapse
 
   return (
     <>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         <Space size={'large'}>
+          <Typography.Text>日期:</Typography.Text>
           <DatePicker
             onChange={selectDate}
             defaultValue={dayjs(today, 'YYYY-MM-DD')}
             format={'YYYY-MM-DD'}
           />
+          <Typography.Text>行业:</Typography.Text>
+          <Select
+            className="w-40"
+            options={category}
+            onChange={getData}
+          ></Select>
           <Button type="primary" onClick={getCategory}>
             查询
           </Button>
         </Space>
-        <Collapse>
-          <Panel header="行业" key="1">
-            {category.map((item, index) => (
-              <Button
-                className="m-1"
-                value={item}
-                key={index}
-                type={activeIndex === index ? 'primary' : 'default'}
-                onClick={() => getData(index, item)}
-              >
-                {item}
-              </Button>
-            ))}
-          </Panel>
-        </Collapse>
         <Divider />
         <Row gutter={[16, 16]}>
+          {loading && <Spin />}
           {stockData &&
             stockData.list.map((symbolData) => (
               <Col xs={24} sm={24} xxl={8} key={symbolData.symbol}>

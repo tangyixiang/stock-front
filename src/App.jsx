@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from 'antd'
+import { Layout, Typography } from 'antd'
 import { Outlet } from 'react-router'
 import AMenu from './components/AMenu'
 const { Header, Content, Sider } = Layout
@@ -11,9 +11,15 @@ const App = () => {
         <AMenu />
       </Sider>
       <Layout>
-        <Header className="p-0 bg-white" />
-        <Content>
-          <div className="bg-white p-2">
+        <Header className="p-0 bg-white">
+          <div className="mx-4 font-bold text-[20px]">HELLO STOCK</div>
+        </Header>
+        <Content
+          style={{
+            margin: '24px 16px 0',
+          }}
+        >
+          <div className="bg-white p-4">
             <Outlet />
           </div>
         </Content>

@@ -45,7 +45,8 @@ const barStyle = {
     },
   },
   yAxis: {
-    show: false,
+    show: true,
+    size: 0,
     tickLine: {
       show: false,
     },
