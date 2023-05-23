@@ -21,10 +21,8 @@ function AMenu() {
   const navigate = useNavigate()
   return (
     <Menu
-      className="py-4"
       theme="dark"
-      mode="inline"
-      defaultSelectedKeys={['4']}
+      mode="horizontal"
       items={items}
       onClick={({ key }) => navigate(key)}
     />
