@@ -1,8 +1,8 @@
 import React from 'react'
-import { Layout, Typography } from 'antd'
+import { Layout } from 'antd'
 import { Outlet } from 'react-router'
 import AMenu from './components/AMenu'
-const { Header, Content, Sider } = Layout
+const { Header, Content } = Layout
 
 const App = () => {
   return (
