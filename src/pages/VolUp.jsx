@@ -14,6 +14,7 @@ import {
 import axios from 'axios'
 import dayjs from 'dayjs'
 import StockCard from '../components/StockCard'
+import AFloatButton from '../components/AFloatButton'
 
 const VolUp = () => {
   const today = dayjs().format('YYYY-MM-DD')
@@ -22,6 +23,7 @@ const VolUp = () => {
   const [date, setDate] = useState(today)
   const [loading, setLoading] = useState(false) // 初始状态为 -1，表示没有 Button 被激活
   const [stockData, setStockData] = useState()
+  const [industry, setIndustry] = useState()
 
   const selectDate = (date, dateString) => {
     setDate(dateString)
@@ -45,6 +47,7 @@ const VolUp = () => {
 
   const getData = (item) => {
     setLoading(true)
+    setIndustry(item)
     axios
       .get('/api/cn/vol/up', {
         params: {
@@ -83,12 +86,13 @@ const VolUp = () => {
           {loading && <Spin />}
           {stockData &&
             stockData.list.map((symbolData) => (
-              <Col xs={24} sm={24} xxl={8} key={symbolData.symbol}>
+              <Col xs={24} sm={12} xxl={8} key={symbolData.symbol}>
                 <StockCard data={symbolData} />
               </Col>
             ))}
         </Row>
       </Space>
+      <AFloatButton watch={industry} />
     </>
   )
 }
