@@ -13,11 +13,12 @@ function createItem(label, key, icon, children, type) {
 }
 
 const items = [
+  createItem('首页', '/home'),
   createItem('公司列表', '/symbol/list'),
   createItem('量价分析', '/volup'),
 ]
 
-function AMenu() {
+const AMenu = () => {
   const navigate = useNavigate()
   return (
     <Menu

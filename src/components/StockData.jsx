@@ -78,7 +78,7 @@ const barStyle = {
   },
 }
 
-function StockData(props) {
+const StockData = (props) => {
   const chart = useRef()
   const paneId = useRef('')
   const id = useId()

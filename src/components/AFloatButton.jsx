@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons'
 import { FloatButton } from 'antd'
 
-function AFloatButton(props) {
+const AFloatButton = (props) => {
   const screenHeight = window.innerHeight
 
   const [times, setTimes] = useState(0)
