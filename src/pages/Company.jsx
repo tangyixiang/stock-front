@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Card, List, Modal } from 'antd'
+import { Button, Card, List, Modal, Form, Input, InputNumber } from 'antd'
 import StockData from '../components/StockData'
 import AFloatButton from '../components/AFloatButton'
 
@@ -11,17 +11,19 @@ const Company = () => {
   const [tempData, setTempData] = useState()
   const [total, setTotal] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [formValue, setFormValue] = useState({})
+  const [form] = Form.useForm()
 
   useEffect(() => {
     axios
       .get('/api/cn/symbol/list', {
-        params: pageInfo,
+        params: { ...pageInfo, ...formValue },
       })
       .then((res) => {
         setTotal(res.data.total)
         setData(res.data.list)
       })
-  }, [pageInfo])
+  }, [pageInfo, formValue])
 
   const showModal = (company) => {
     setCompany(company)
@@ -41,8 +43,27 @@ const Company = () => {
       .then((res) => setTempData(res.data))
   }
 
+  const onFinish = (values) => {
+    console.log(values)
+    const { max, min } = values
+    setFormValue(values)
+  }
+
   return (
     <>
+      <Form form={form} layout={'inline'} onFinish={onFinish}>
+        <Form.Item label="市值范围" name="min">
+          <InputNumber min={0} />
+        </Form.Item>
+        <Form.Item label="至" name="max">
+          <InputNumber min={0} />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            查询
+          </Button>
+        </Form.Item>
+      </Form>
       <List
         pagination={{
           onChange: (page) => {
