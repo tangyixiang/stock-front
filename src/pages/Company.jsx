@@ -1,7 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Card, List, Modal, Space } from 'antd'
+import { Button, Card, List, Modal } from 'antd'
 import StockData from '../components/StockData'
+import AFloatButton from '../components/AFloatButton'
 
 const Company = () => {
   const [pageInfo, setPageInfo] = useState({ pageSize: 20, pageNo: 1 })
@@ -81,6 +82,7 @@ const Company = () => {
       >
         {tempData && <StockData data={tempData} />}
       </Modal>
+      <AFloatButton watch={pageInfo} />
     </>
   )
 }
