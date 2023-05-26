@@ -25,9 +25,7 @@ const Company = () => {
 
   useEffect(() => {
     axios
-      .get('/api/cn/symbol/list', {
-        params: { ...pageInfo, ...formValue },
-      })
+      .post('/api/cn/symbol/list', { ...pageInfo, ...formValue })
       .then((res) => {
         setTotal(res.data.total)
         setData(res.data.list)
@@ -59,6 +57,9 @@ const Company = () => {
   return (
     <>
       <Form form={form} layout={'inline'} onFinish={onFinish}>
+        <Form.Item label="代码" name="symbol">
+          <Input className="w-[96px]" allowClear />
+        </Form.Item>
         <Form.Item label="市值范围" name="min">
           <InputNumber min={0} />
         </Form.Item>
