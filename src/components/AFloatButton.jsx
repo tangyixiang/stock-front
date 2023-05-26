@@ -28,6 +28,10 @@ function AFloatButton(props) {
 
   useEffect(() => {
     setTimes(0)
+    window.scroll({
+      top: 0,
+      behavior: 'smooth',
+    })
   }, [props.watch])
 
   return (

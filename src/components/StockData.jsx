@@ -22,6 +22,31 @@ const barStyle = {
       showType: 'rect',
       rect: {
         position: 'fixed',
+        paddingLeft: 2,
+        paddingRight: 2,
+        paddingTop: 2,
+        paddingBottom: 6,
+      },
+      custom: (data) => {
+        const { current } = data
+        const temp = current.turnover / 10000
+        return [
+          { title: 'date', value: current.date },
+          { title: 'open', value: current.open },
+          { title: 'close', value: current.close },
+          { title: 'high', value: current.high },
+          { title: 'low', value: current.low },
+          { title: 'volume', value: current.volume },
+          {
+            title: '成交额',
+            value:
+              temp > 10000
+                ? (temp / 10000).toFixed(2) + '亿'
+                : temp.toFixed(2) + '万',
+          },
+          { title: '涨幅', value: current.diff_per + '%' },
+          { title: '换手率', value: current.exchange_rate },
+        ]
       },
     },
   },
@@ -63,9 +88,22 @@ function StockData(props) {
     data.forEach((item) => {
       item.timestamp = new Date(item.date).getTime()
       item.volume = item.trade_vol
+      item.turnover = item.trade_quota
     })
 
-    chart.current = init(id)
+    chart.current = init(id, {
+      locale: 'zh-CN',
+      customApi: {
+        formatBigNumber: (values) => {
+          const data = values / 10000
+          if (data > 100000) {
+            return (data / 10000).toFixed(2) + '亿'
+          } else {
+            return data.toFixed(2) + '万'
+          }
+        },
+      },
+    })
     // paneId.current = chart.current?.createIndicator('VOL', true)
     chart.current?.createIndicator('VOL', true)
     chart.current?.createIndicator('BOLL', false, { id: 'candle_pane' })

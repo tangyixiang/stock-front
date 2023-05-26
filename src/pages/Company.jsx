@@ -1,6 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Card, List, Modal, Form, Input, InputNumber } from 'antd'
+import {
+  Button,
+  Card,
+  List,
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Typography,
+} from 'antd'
 import StockData from '../components/StockData'
 import AFloatButton from '../components/AFloatButton'
 
@@ -44,8 +53,6 @@ const Company = () => {
   }
 
   const onFinish = (values) => {
-    console.log(values)
-    const { max, min } = values
     setFormValue(values)
   }
 
@@ -72,6 +79,7 @@ const Company = () => {
           pageSize: pageInfo.pageSize,
           total: total,
         }}
+        header={<Typography.Title level={5}>数量:{total}</Typography.Title>}
         dataSource={data}
         renderItem={(item) => (
           <List.Item>

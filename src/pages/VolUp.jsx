@@ -80,6 +80,9 @@ const VolUp = () => {
           <Button type="primary" onClick={getCategory}>
             查询
           </Button>
+
+          <Typography.Text>行业数量: {category.length}</Typography.Text>
+          <Typography.Text>当前行业数量: {stockData?.total}</Typography.Text>
         </Space>
         <Divider />
         <Row gutter={[16, 16]}>
