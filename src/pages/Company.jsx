@@ -110,7 +110,7 @@ const Company = () => {
           }
         }}
       >
-        {tempData && <StockData data={tempData} />}
+        {tempData && <StockData data={tempData} highClass={'h-[600px]'} />}
       </Modal>
       <AFloatButton watch={pageInfo} />
     </>

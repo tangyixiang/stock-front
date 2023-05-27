@@ -117,7 +117,13 @@ const StockData = (props) => {
     chart.current?.setStyles(barStyle)
   }, [])
 
-  return <div ref={chart} id={id} className="h-80 w-full" />
+  const classNames = ['w-full']
+  if (props.highClass) {
+    classNames.push(props.highClass)
+  } else {
+    classNames.push('h-80')
+  }
+  return <div ref={chart} id={id} className={classNames.join(' ')} />
   // style={{ width: '620px', height: '440px' }}
 }
 
