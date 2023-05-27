@@ -31,7 +31,7 @@ const barStyle = {
         const { current } = data
         const temp = current.turnover / 10000
         return [
-          { title: 'date', value: current.date },
+          { title: '日期', value: current.date },
           { title: 'open', value: current.open },
           { title: 'close', value: current.close },
           { title: 'high', value: current.high },
