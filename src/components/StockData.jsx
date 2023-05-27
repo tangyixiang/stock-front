@@ -31,21 +31,21 @@ const barStyle = {
         const { current } = data
         const temp = current.turnover / 10000
         return [
-          { title: '日期', value: current.date },
+          { title: '日期:', value: current.date },
           { title: 'open', value: current.open },
           { title: 'close', value: current.close },
           { title: 'high', value: current.high },
           { title: 'low', value: current.low },
           { title: 'volume', value: current.volume },
           {
-            title: '成交额',
+            title: '成交额:',
             value:
               temp > 10000
                 ? (temp / 10000).toFixed(2) + '亿'
                 : temp.toFixed(2) + '万',
           },
-          { title: '涨幅', value: current.diff_per + '%' },
-          { title: '换手率', value: current.exchange_rate },
+          { title: '涨幅:', value: current.diff_per + '%' },
+          { title: '换手率:', value: current.exchange_rate },
         ]
       },
     },
