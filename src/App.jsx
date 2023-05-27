@@ -8,7 +8,7 @@ const App = () => {
   return (
     <Layout>
       <Layout>
-        <Header className="flex items-center">
+        <Header>
           <AMenu />
         </Header>
         <Content className="my-6 mx-4">
