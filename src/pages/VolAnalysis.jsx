@@ -8,12 +8,14 @@ import {
   Spin,
   Button,
   message,
+  Popover,
+  Card,
   Row,
   Col,
 } from 'antd'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import StockCard from '../components/StockCard'
+import StockData from '../components/StockData'
 import AFloatButton from '../components/AFloatButton'
 
 const VolAnalysis = () => {
@@ -22,6 +24,7 @@ const VolAnalysis = () => {
   // 上涨
   const [volType, setvolType] = useState(2)
   const [date, setDate] = useState(today)
+  const [info, setInfo] = useState('')
   const [loading, setLoading] = useState(false) // 初始状态为 -1，表示没有 Button 被激活
 
   useEffect(() => {
@@ -44,6 +47,15 @@ const VolAnalysis = () => {
       .catch((e) => {
         setLoading(false)
         message.error('异常')
+      })
+  }
+
+  const getInfo = (symbol) => {
+    axios
+      .get('/api/cn/symbol/info', { params: { symbol: symbol } })
+      .then((res) => {
+        const data = res.data
+        setInfo(data.description)
       })
   }
 
@@ -93,7 +105,20 @@ const VolAnalysis = () => {
           {loading && <Spin />}
           {volData.map((item) => (
             <Col xs={24} sm={12} xxl={8}>
-              <StockCard data={item} />
+              <Card
+                title={item.symbol}
+                type="inner"
+                style={{
+                  boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
+                }}
+                extra={
+                  <Popover content={info} trigger="click">
+                    <Button onClick={() => getInfo(item.symbol)}>信息</Button>
+                  </Popover>
+                }
+              >
+                <StockData data={item.data} />
+              </Card>
             </Col>
           ))}
         </Row>
