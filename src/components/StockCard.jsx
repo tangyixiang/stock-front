@@ -5,8 +5,9 @@ import StockData from './StockData'
 const StockCard = (props) => {
   const { symbol, name, market_value, data } = props.data
 
-  const title =
-    symbol + '-' + name + '-' + (market_value / 10000 / 10000).toFixed(2) + '亿'
+  const title = `${symbol}${name ? '-' + name : ''}${
+    market_value ? '-' + (market_value / 10000 / 10000).toFixed(2) + '亿' : ''
+  }`
 
   return (
     <Card
