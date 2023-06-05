@@ -25,7 +25,9 @@ const Company = () => {
 
   useEffect(() => {
     axios
-      .post('/api/cn/symbol/list', { ...pageInfo, ...formValue })
+      .get('/api/cn/symbol/list', {
+        params: { ...pageInfo, ...formValue },
+      })
       .then((res) => {
         setTotal(res.data.total)
         setData(res.data.list)
@@ -87,7 +89,7 @@ const Company = () => {
             <Card
               className="w-full"
               title={`${item.symbol}-${item.name}-${(
-                item.market_value /
+                item.marketValue /
                 10000 /
                 10000
               ).toFixed(2)}亿`}

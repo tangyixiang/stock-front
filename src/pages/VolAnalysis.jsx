@@ -12,6 +12,7 @@ import {
   Card,
   Row,
   Col,
+  Pagination,
 } from 'antd'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -21,6 +22,8 @@ import AFloatButton from '../components/AFloatButton'
 const VolAnalysis = () => {
   const today = dayjs().format('YYYY-MM-DD')
   const [volData, setVolData] = useState([])
+  const [pageInfo, setPageInfo] = useState({ pageSize: 20, pageNo: 1 })
+  const [total, setTotal] = useState(0)
   // 上涨
   const [volType, setvolType] = useState(2)
   const [date, setDate] = useState(today)
@@ -28,21 +31,24 @@ const VolAnalysis = () => {
   const [loading, setLoading] = useState(false) // 初始状态为 -1，表示没有 Button 被激活
 
   useEffect(() => {
-    if (!loading) return
     getData()
-  }, [date, volType])
+  }, [pageInfo])
 
   const getData = () => {
+    setLoading(true)
     axios
       .get('/api/cn/analysis/vol', {
         params: {
           date: date,
-          vol_type: volType,
+          volType: volType,
+          pageSize: pageInfo.pageSize,
+          pageNo: pageInfo.pageNo,
         },
       })
       .then((res) => {
         setLoading(false)
-        setVolData(res.data)
+        setVolData(res.data.list)
+        setTotal(res.data.total)
       })
       .catch((e) => {
         setLoading(false)
@@ -88,14 +94,15 @@ const VolAnalysis = () => {
             className="w-40"
             options={options}
             defaultValue={'2'}
-            onChange={(value) => setvolType(value)}
+            onChange={(value) => {
+              setvolType(value)
+            }}
           ></Select>
+          <Typography.Text>总数:</Typography.Text>
+          <Typography.Text>{total}</Typography.Text>
           <Button
             type="primary"
-            onClick={() => {
-              setLoading(true)
-              getData()
-            }}
+            onClick={() => setPageInfo({ ...pageInfo, pageNo: 1 })}
           >
             查询
           </Button>
@@ -104,17 +111,22 @@ const VolAnalysis = () => {
         <Row gutter={[16, 16]}>
           {loading && <Spin />}
           {volData.map((item) => (
-            <Col xs={24} sm={12} xxl={8}>
+            <Col xs={24} sm={12} xxl={8} key={item.symbol}>
               <Card
-                title={item.symbol}
+                title={`${item.symbol}-${(item.marketValue / 10000 / 10000).toFixed(2)}亿`}
                 type="inner"
                 style={{
                   boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
                 }}
                 extra={
-                  <Popover content={info} trigger="click">
-                    <Button onClick={() => getInfo(item.symbol)}>信息</Button>
-                  </Popover>
+                  <Space>
+                    <Typography.Text>
+                      量比:{item.tradeVolPct * 100}%
+                    </Typography.Text>
+                    <Popover content={info} trigger="click">
+                      <Button onClick={() => getInfo(item.symbol)}>信息</Button>
+                    </Popover>
+                  </Space>
                 }
               >
                 <StockData data={item.data} />
@@ -122,6 +134,22 @@ const VolAnalysis = () => {
             </Col>
           ))}
         </Row>
+        {total > 0 && (
+          <>
+            <Divider />
+            <div className="text-center">
+              <Pagination
+                defaultCurrent={1}
+                pageSize={pageInfo.pageSize}
+                total={total}
+                showSizeChanger={false}
+                onChange={(page) => {
+                  setPageInfo({ ...pageInfo, pageNo: page })
+                }}
+              />
+            </div>
+          </>
+        )}
       </Space>
       <AFloatButton watch={date} />
     </>

@@ -16,7 +16,6 @@ const items = [
   createItem('首页', '/home'),
   createItem('公司列表', '/symbol/list'),
   createItem('量价分析', '/vol/analysis'),
-  createItem('量价齐升', '/volup'),
 ]
 
 const AMenu = () => {
