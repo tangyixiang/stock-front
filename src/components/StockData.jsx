@@ -44,8 +44,8 @@ const barStyle = {
                 ? (temp / 10000).toFixed(2) + '亿'
                 : temp.toFixed(2) + '万',
           },
-          { title: '涨幅:', value: current.diff_per + '%' },
-          { title: '换手率:', value: current.exchange_rate },
+          { title: '涨幅:', value: current.diffPer + '%' },
+          { title: '换手率:', value: current.exchangeRate },
         ]
       },
     },
@@ -87,8 +87,8 @@ const StockData = (props) => {
     const data = props.data
     data.forEach((item) => {
       item.timestamp = new Date(item.date).getTime()
-      item.volume = item.trade_vol
-      item.turnover = item.trade_quota
+      item.volume = item.tradeVol
+      item.turnover = item.tradeQuota
     })
 
     chart.current = init(id, {
