@@ -1,7 +1,5 @@
 import React from 'react'
 import { Table, Tag } from 'antd'
-import RedText from './RedText'
-import GreenText from './DataRender/GreenText'
 
 const industryColumns = [
   {
