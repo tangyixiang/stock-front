@@ -3,10 +3,12 @@ import { Row, Col, Card, List, Table } from 'antd'
 import axios from 'axios'
 import Industry from '../components/Industry'
 import SimpleVolTable from '../components/SimpleVolTable'
+import StockLHB from '../components/StockLHB'
 
 const Home = () => {
   const [industry, setIndustry] = useState()
   const [realTimeVol, setRealTimeVol] = useState([])
+  const [lhbData, setLhbData] = useState([])
 
   useEffect(() => {
     axios
@@ -14,6 +16,7 @@ const Home = () => {
       .then((res) => setIndustry(res.data))
 
     axios.get('/api/cn/analysis/vol/up').then((res) => setRealTimeVol(res.data))
+    axios.get('/api/cn/analysis/lhb').then((res) => setLhbData(res.data))
   }, [])
 
   return (
@@ -38,7 +41,11 @@ const Home = () => {
             <Industry data={industry} size={'small'} showPage />
           </Card>
         </Col>
-        <Col span={8}></Col>
+      </Row>
+      <Row className="my-4" gutter={4}>
+        <Col span={24}>
+          <StockLHB data={lhbData} />
+        </Col>
       </Row>
     </>
   )
