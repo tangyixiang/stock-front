@@ -81,22 +81,22 @@ function StockLHB(props) {
       title: '上榜原因',
       dataIndex: 'reason',
     },
-    {
-      title: '上榜后1日',
-      dataIndex: 'day1',
-    },
-    {
-      title: '上榜后2日',
-      dataIndex: 'day2',
-    },
-    {
-      title: '上榜后5日',
-      dataIndex: 'day5',
-    },
-    {
-      title: '上榜后10日',
-      dataIndex: 'day10',
-    },
+    // {
+    //   title: '上榜后1日',
+    //   dataIndex: 'day1',
+    // },
+    // {
+    //   title: '上榜后2日',
+    //   dataIndex: 'day2',
+    // },
+    // {
+    //   title: '上榜后5日',
+    //   dataIndex: 'day5',
+    // },
+    // {
+    //   title: '上榜后10日',
+    //   dataIndex: 'day10',
+    // },
   ]
 
   return (
