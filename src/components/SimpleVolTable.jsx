@@ -18,10 +18,20 @@ const columns = [
     title: '量比',
     dataIndex: 'riseRatio',
   },
+  {
+    title: '总市值',
+    dataIndex: 'marketValue',
+    render: (text) => (text / 10000 / 10000).toFixed(2) + '亿'
+  },
+  {
+    title: '成交金额',
+    dataIndex: 'tradeQuote',
+    render: (text) => (text / 10000).toFixed(2) + '万'
+  },
 ]
 
 const SimpleVolTable = (props) => {
-  return <Table columns={columns} dataSource={props.data}></Table>
+  return <Table rowKey={'symbol'} columns={columns} dataSource={props.data}></Table>
 }
 
 export default SimpleVolTable
