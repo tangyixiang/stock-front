@@ -15,6 +15,7 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import StockCard from '../components/StockCard'
 import AFloatButton from '../components/AFloatButton'
+import Wrapper from '../components/Wrapper'
 
 const VolUp = () => {
   const today = dayjs().format('YYYY-MM-DD')
@@ -62,7 +63,7 @@ const VolUp = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         <Space size={'large'}>
           <Typography.Text>日期:</Typography.Text>
@@ -96,7 +97,7 @@ const VolUp = () => {
         </Row>
       </Space>
       <AFloatButton watch={industry} />
-    </>
+    </Wrapper>
   )
 }
 

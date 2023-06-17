@@ -12,6 +12,7 @@ import {
 } from 'antd'
 import StockData from '../components/StockData'
 import AFloatButton from '../components/AFloatButton'
+import Wrapper from '../components/Wrapper'
 
 const Company = () => {
   const [pageInfo, setPageInfo] = useState({ pageSize: 20, pageNo: 1 })
@@ -57,7 +58,7 @@ const Company = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Form form={form} layout={'inline'} onFinish={onFinish}>
         <Form.Item label="代码" name="symbol">
           <Input className="w-[96px]" allowClear />
@@ -115,7 +116,7 @@ const Company = () => {
         {tempData && <StockData data={tempData} highClass={'h-[600px]'} />}
       </Modal>
       <AFloatButton watch={pageInfo} />
-    </>
+    </Wrapper>
   )
 }
 

@@ -18,6 +18,7 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import StockData from '../components/StockData'
 import AFloatButton from '../components/AFloatButton'
+import Wrapper from '../components/Wrapper'
 
 const VolAnalysis = () => {
   const today = dayjs().format('YYYY-MM-DD')
@@ -80,7 +81,7 @@ const VolAnalysis = () => {
     },
   ]
   return (
-    <>
+    <Wrapper>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         <Space size={'large'}>
           <Typography.Text>日期:</Typography.Text>
@@ -113,7 +114,11 @@ const VolAnalysis = () => {
           {volData.map((item) => (
             <Col xs={24} sm={12} xxl={8} key={item.symbol}>
               <Card
-                title={`${item.symbol}-${(item.marketValue / 10000 / 10000).toFixed(2)}亿`}
+                title={`${item.symbol}-${(
+                  item.marketValue /
+                  10000 /
+                  10000
+                ).toFixed(2)}亿`}
                 type="inner"
                 style={{
                   boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
@@ -152,7 +157,7 @@ const VolAnalysis = () => {
         )}
       </Space>
       <AFloatButton watch={date} />
-    </>
+    </Wrapper>
   )
 }
 

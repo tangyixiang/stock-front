@@ -3,6 +3,7 @@ import { Space, Typography, DatePicker, Button, Divider } from 'antd'
 import dayjs from 'dayjs'
 import axios from 'axios'
 import Industry from '../components/Industry'
+import Wrapper from '../components/Wrapper'
 
 const IndustryAnalysis = () => {
   const today = dayjs().format('YYYYMMDD')
@@ -24,21 +25,24 @@ const IndustryAnalysis = () => {
   }
 
   return (
-    <Space direction={'vertical'} size="middle" style={{ display: 'flex' }}>
-      <Space>
-        <Typography.Text>日期:</Typography.Text>
-        <DatePicker
-          onChange={selectDate}
-          defaultValue={dayjs(today, 'YYYYMMDD')}
-          format={'YYYYMMDD'}
-        />
-        <Button type="primary" onClick={() => getIndustryData(date)}>
-          查询
-        </Button>
+    <Wrapper>
+      <Space direction={'vertical'} size="middle" style={{ display: 'flex' }}>
+        <Space>
+          <Typography.Text>日期:</Typography.Text>
+          <DatePicker
+            onChange={selectDate}
+            defaultValue={dayjs(today, 'YYYYMMDD')}
+            format={'YYYYMMDD'}
+          />
+          <Button type="primary" onClick={() => getIndustryData(date)}>
+            查询
+          </Button>
+        </Space>
+
+        <Divider />
+        <Industry data={industry} />
       </Space>
-      <Divider />
-      <Industry data={industry} />
-    </Space>
+    </Wrapper>
   )
 }
 

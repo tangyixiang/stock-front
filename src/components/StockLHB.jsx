@@ -3,19 +3,6 @@ import { Table } from 'antd'
 import axios from 'axios'
 
 function StockLHB(props) {
-  // const [data, setData] = useState([])
-
-  // useEffect(() => {
-  //   axios
-  //     .get('/api/stocklhb')
-  //     .then((response) => {
-  //       setData(response.data)
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     })
-  // }, [])
-
   const columns = [
     {
       title: '日期',
@@ -30,8 +17,17 @@ function StockLHB(props) {
       dataIndex: 'name',
     },
     {
+      title: '上榜原因',
+      dataIndex: 'reason',
+    },
+    {
       title: '解读',
       dataIndex: 'interpretation',
+    },
+    {
+      title: '流通市值',
+      dataIndex: 'circulatingMarketValue',
+      render: (text) => (text / 10000 / 10000).toFixed(2) + '亿',
     },
     {
       title: '收盘',
@@ -44,43 +40,44 @@ function StockLHB(props) {
     {
       title: '净买额',
       dataIndex: 'netBuyingAmount',
+      render: (text) => (text / 10000 / 10000).toFixed(2) + '亿',
     },
     {
       title: '买入额',
       dataIndex: 'buyingAmount',
+      render: (text) => (text / 10000 / 10000).toFixed(2) + '亿',
     },
     {
       title: '卖出额',
       dataIndex: 'sellingAmount',
+      render: (text) => (text / 10000 / 10000).toFixed(2) + '亿',
     },
     {
       title: '成交额',
       dataIndex: 'turnover',
+      render: (text) => (text / 10000 / 10000).toFixed(2) + '亿',
     },
     {
       title: '市场总成交额',
       dataIndex: 'totalMarketTurnover',
+      render: (text) => (text / 10000 / 10000).toFixed(2) + '亿',
     },
     {
       title: '净买额占总成交比',
       dataIndex: 'netBuyingRatio',
+      render: (text) => text.toFixed(2) + '%',
     },
     {
       title: '成交额占总成交比',
       dataIndex: 'turnoverRatio',
+      render: (text) => text.toFixed(2) + '%',
     },
     {
       title: '换手率',
       dataIndex: 'turnoverRate',
+      render: (text) => text.toFixed(2) + '%',
     },
-    {
-      title: '流通市值',
-      dataIndex: 'circulatingMarketValue',
-    },
-    {
-      title: '上榜原因',
-      dataIndex: 'reason',
-    },
+
     // {
     //   title: '上榜后1日',
     //   dataIndex: 'day1',
@@ -99,15 +96,7 @@ function StockLHB(props) {
     // },
   ]
 
-  return (
-    <Table
-      scroll={{
-        x: 2000,
-      }}
-      dataSource={props.data}
-      columns={columns}
-    />
-  )
+  return <Table rowKey={'symbol'} dataSource={props.data} columns={columns} />
 }
 
 export default StockLHB

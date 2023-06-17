@@ -12,9 +12,7 @@ const App = () => {
           <AMenu />
         </Header>
         <Content className="my-6 mx-4">
-          <div className="bg-white p-4">
-            <Outlet />
-          </div>
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
