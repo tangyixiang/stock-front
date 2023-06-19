@@ -161,7 +161,7 @@ const Home = () => {
       </Row>
       <Row className="my-4" gutter={8}>
         {realTimeVol.length > 0 && (
-          <Col span={12}>
+          <Col span={24}>
             <Card title={'实时量比'} bodyStyle={{ padding: 8 }}>
               <SimpleVolTable data={realTimeVol} />
             </Card>
