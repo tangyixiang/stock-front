@@ -169,7 +169,7 @@ const Home = () => {
         )}
       </Row>
       <Row className="my-4" gutter={8}>
-        <Col span={12}>
+        <Col span={10}>
           <Card
             title={'涨跌幅榜'}
             bodyStyle={{ padding: 8 }}
@@ -191,7 +191,7 @@ const Home = () => {
             <GainsTable data={gainsData} />
           </Card>
         </Col>
-        <Col span={12}>
+        <Col span={14}>
           <Card title={'今日板块'} bodyStyle={{ padding: 8 }}>
             <Industry data={industry} showPage />
           </Card>
