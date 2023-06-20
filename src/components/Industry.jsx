@@ -1,5 +1,7 @@
-import React from 'react'
-import { Table, Tag } from 'antd'
+import React, { useState } from 'react'
+import { Table, Tag, Modal } from 'antd'
+import axios from 'axios'
+import IndustryDetail from './IndustryDetail'
 
 const industryColumns = [
   {
@@ -22,11 +24,6 @@ const industryColumns = [
     dataIndex: 'price',
     key: 'price',
   },
-  // {
-  //   title: '涨跌额',
-  //   dataIndex: 'diffQuota',
-  //   key: 'diffQuota',
-  // },
   {
     title: '涨跌幅',
     dataIndex: 'diffPer',
@@ -77,14 +74,51 @@ const industryColumns = [
 ]
 
 const Industry = (props) => {
+  const [detail, setDetail] = useState([])
+  const [modal, setModal] = useState(false)
+
+  const getDetail = (name) => {
+    axios
+      .get('/api/cn/analysis/industry/detail', {
+        params: {
+          name: name,
+        },
+      })
+      .then((res) => setDetail(res.data))
+    setModal(true)
+  }
+
+  const closeModal = () => {
+    setModal(false)
+    setDetail([])
+  }
+
   return (
-    <Table
-      columns={industryColumns}
-      dataSource={props.data}
-      size={props.size}
-      rowKey={'industryCode'}
-      pagination={{ pageSize: props.showPage ? 10 : props.data?.length }}
-    />
+    <>
+      <Table
+        columns={industryColumns}
+        dataSource={props.data}
+        size={props.size}
+        rowKey={'industryCode'}
+        onRow={(record) => {
+          return {
+            onClick: (event) => {
+              getDetail(record.industryName)
+            }, // 点击行
+          }
+        }}
+      />
+      <Modal
+        open={modal}
+        centered
+        onCancel={() => closeModal()}
+        footer={null}
+        title={'数据'}
+        width={'70%'}
+      >
+        <IndustryDetail data={detail} />
+      </Modal>
+    </>
   )
 }
 

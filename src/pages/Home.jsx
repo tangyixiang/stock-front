@@ -1,23 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Row,
-  Col,
-  Card,
-  Statistic,
-  Modal,
-  Typography,
-  Segmented,
-  Space,
-} from 'antd'
+import { Row, Col, Card, Typography, Segmented, Space } from 'antd'
 import axios from 'axios'
 import Industry from '../components/Industry'
 import SimpleVolTable from '../components/SimpleVolTable'
 import StockLHB from '../components/StockLHB'
-import { getText } from '../helper/MarketValueTextHelper'
-import SimpleStockInfoTable from '../components/SimpleStockInfoTable'
 import HorizontalBarChart from '../components/HorizontalBarChart'
 import Wrapper from '../components/Wrapper'
 import GainsTable from '../components/GainsTable'
+import MarketDistribute from '../components/MarketDistribute'
 
 const Home = () => {
   const [industry, setIndustry] = useState()
@@ -26,9 +16,6 @@ const Home = () => {
   const [upAndDownCount, setUpAndDownCount] = useState({})
   const [lhbData, setLhbData] = useState([])
   const [gainsData, setGainsData] = useState([])
-  const [marketDistribution, setMarketDistribution] = useState({})
-  const [marketDistributionDetail, setMarketDistributionDetail] = useState([])
-  const [modal, setModal] = useState(false)
 
   useEffect(() => {
     axios
@@ -39,9 +26,6 @@ const Home = () => {
       .then((res) => setUpAndDownCount(res.data))
     axios.get('/api/cn/analysis/vol/up').then((res) => setRealTimeVol(res.data))
     axios.get('/api/cn/analysis/lhb').then((res) => setLhbData(res.data))
-    axios
-      .get('/api/cn/analysis/market/value/distribution')
-      .then((res) => setMarketDistribution(res.data))
     giansList('/api/cn/analysis/gains/increase/list', 'd', 5)
   }, [])
 
@@ -54,20 +38,6 @@ const Home = () => {
         },
       })
       .then((res) => setGainsData(res.data))
-  }
-
-  const showDistributeDetail = (key) => {
-    setModal(true)
-    axios
-      .get('/api/cn/analysis/market/value/distribution/detail', {
-        params: { type: key },
-      })
-      .then((res) => setMarketDistributionDetail(res.data))
-  }
-
-  const closeModal = () => {
-    setModal(false)
-    setMarketDistributionDetail([])
   }
 
   const gainCalculate = (v) => {
@@ -142,23 +112,7 @@ const Home = () => {
       <Typography.Title level={5} className="px-2">
         市值范围
       </Typography.Title>
-      <Row className="my-4" gutter={8}>
-        {Object.keys(marketDistribution).map((k, v) => (
-          <Col span={3} key={k}>
-            <a onClick={() => showDistributeDetail(k)}>
-              <Card hoverable>
-                <Statistic
-                  title={getText(k)}
-                  value={marketDistribution[k]}
-                  valueStyle={{
-                    color: '#0f172a',
-                  }}
-                />
-              </Card>
-            </a>
-          </Col>
-        ))}
-      </Row>
+      <MarketDistribute />
       <Row className="my-4" gutter={8}>
         {realTimeVol.length > 0 && (
           <Col span={24}>
@@ -206,16 +160,6 @@ const Home = () => {
           )}
         </Col>
       </Row>
-      <Modal
-        open={modal}
-        centered
-        onCancel={() => closeModal()}
-        footer={null}
-        title={'数据'}
-        width={'70%'}
-      >
-        <SimpleStockInfoTable data={marketDistributionDetail} />
-      </Modal>
     </Wrapper>
   )
 }
