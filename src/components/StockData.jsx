@@ -27,7 +27,7 @@ const barStyle = {
         paddingTop: 2,
         paddingBottom: 6,
       },
-      custom: (data) => {
+      custom: (data, styles) => {
         const { current } = data
         const temp = current.turnover / 10000
         return [
@@ -44,7 +44,13 @@ const barStyle = {
                 ? (temp / 10000).toFixed(2) + '亿'
                 : temp.toFixed(2) + '万',
           },
-          { title: '涨幅:', value: current.diffPer + '%' },
+          {
+            title: '涨幅:',
+            value: {
+              text: current.diffPer + '%',
+              color: current.diffPer < 0 ? '#10B981' : '#EF4444',
+            },
+          },
           { title: '换手率:', value: current.exchangeRate },
         ]
       },
