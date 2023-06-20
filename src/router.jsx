@@ -5,6 +5,7 @@ import Company from './pages/Company'
 import Home from './pages/Home'
 import VolAnalysis from './pages/VolAnalysis'
 import IndustryAnalysis from './pages/IndustryAnalysis'
+import SymbolAnalysis from './pages/SymbolAnalysis'
 
 // 路由
 const router = createHashRouter([
@@ -17,6 +18,7 @@ const router = createHashRouter([
       { path: '/symbol/list', element: <Company /> },
       { path: '/vol/analysis', element: <VolAnalysis /> },
       { path: '/industry/analysis', element: <IndustryAnalysis /> },
+      { path: '/symbol/analysis', element: <SymbolAnalysis /> },
     ],
   },
 ])

@@ -114,7 +114,7 @@ const VolAnalysis = () => {
           {volData.map((item) => (
             <Col xs={24} sm={12} xxl={8} key={item.symbol}>
               <Card
-                title={`${item.symbol}-${(
+                title={`${item.symbol}-${item.name}-${(
                   item.marketValue /
                   10000 /
                   10000
