@@ -8,14 +8,13 @@ import HorizontalBarChart from '../components/HorizontalBarChart'
 import Wrapper from '../components/Wrapper'
 import GainsTable from '../components/GainsTable'
 import MarketDistribute from '../components/MarketDistribute'
+import UpAndDownRank from '../components/UpAndDownRank'
 
 const Home = () => {
   const [industry, setIndustry] = useState()
-  const [upState, setUpState] = useState('up')
   const [realTimeVol, setRealTimeVol] = useState([])
   const [upAndDownCount, setUpAndDownCount] = useState({})
   const [lhbData, setLhbData] = useState([])
-  const [gainsData, setGainsData] = useState([])
 
   useEffect(() => {
     axios
@@ -26,59 +25,7 @@ const Home = () => {
       .then((res) => setUpAndDownCount(res.data))
     axios.get('/api/cn/analysis/vol/up').then((res) => setRealTimeVol(res.data))
     axios.get('/api/cn/analysis/lhb').then((res) => setLhbData(res.data))
-    giansList('/api/cn/analysis/gains/increase/list', 'd', 5)
   }, [])
-
-  const giansList = (url, type, period) => {
-    axios
-      .get(url, {
-        params: {
-          type: type,
-          period: period,
-        },
-      })
-      .then((res) => setGainsData(res.data))
-  }
-
-  const gainCalculate = (v) => {
-    let type = 'd'
-    let period = 5
-    let url
-    if (v == '5日') {
-      period = 5
-    }
-    if (v == '10日') {
-      period = 10
-    }
-    if (v == '30日') {
-      period = 30
-    }
-    if (v == '3个月') {
-      period = 90
-    }
-    if (v == '6个月') {
-      period = 180
-    }
-    if (v == '今年') {
-      type = 'y'
-      period = 1
-    }
-    if (upState == 'up') {
-      url = '/api/cn/analysis/gains/increase/list'
-    } else {
-      url = '/api/cn/analysis/gains/decrease/list'
-    }
-    giansList(url, type, period)
-  }
-
-  //TODO watch 变量修改
-  const changeUpState = (v) => {
-    if (v == '涨') {
-      setUpState('up')
-    } else {
-      setUpState('down')
-    }
-  }
 
   return (
     <Wrapper nobg>
@@ -124,26 +71,7 @@ const Home = () => {
       </Row>
       <Row className="my-4" gutter={8}>
         <Col span={10}>
-          <Card
-            title={'涨跌幅榜'}
-            bodyStyle={{ padding: 8 }}
-            extra={
-              <Space direction={'horizontal'}>
-                <Segmented
-                  defaultValue="涨"
-                  options={['涨', '跌']}
-                  onChange={(v) => changeUpState(v)}
-                />
-                <Segmented
-                  defaultValue="5日"
-                  options={['5日', '10日', '30日', '3个月', '6个月', '今年']}
-                  onChange={(v) => gainCalculate(v)}
-                />
-              </Space>
-            }
-          >
-            <GainsTable data={gainsData} />
-          </Card>
+          <UpAndDownRank />
         </Col>
         <Col span={14}>
           <Card title={'今日板块'} bodyStyle={{ padding: 8 }}>

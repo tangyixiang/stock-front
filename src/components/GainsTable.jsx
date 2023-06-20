@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Table, Tag } from 'antd'
+import SymbolCard from './SymbolCard'
 
 const columns = [
   {
@@ -41,7 +42,36 @@ const columns = [
 ]
 
 const GainsTable = (props) => {
-  return <Table rowKey={'symbol'} dataSource={props.data} columns={columns} />
+  const [showInfo, setshowInfo] = useState({ symbol: '', open: false })
+
+  const close = () => {
+    console.log('运行')
+    setshowInfo({ ...showInfo, open: false })
+  }
+
+  return (
+    <>
+      <Table
+        rowKey={'symbol'}
+        dataSource={props.data}
+        columns={columns}
+        onRow={(record) => {
+          return {
+            onClick: (event) => {
+              setshowInfo({ symbol: record.symbol, open: true })
+            },
+          }
+        }}
+      />
+      {showInfo.symbol && (
+        <SymbolCard
+          symbol={showInfo.symbol}
+          open={showInfo.open}
+          close={close}
+        />
+      )}
+    </>
+  )
 }
 
 export default GainsTable
