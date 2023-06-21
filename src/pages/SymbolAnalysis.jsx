@@ -3,10 +3,20 @@ import { Divider, Form, Input, Button, Row, Col, Card } from 'antd'
 import axios from 'axios'
 import StockData from '../components/StockData'
 import Wrapper from '../components/Wrapper'
+import { useSearchParams } from 'react-router-dom'
 
-const SymbolAnalysis = () => {
+const SymbolAnalysis = (props) => {
   const [data, setData] = useState([])
   const [form] = Form.useForm()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  useEffect(() => {
+    console.log('运行')
+    const symbolStr = searchParams.get('symbolStr')
+    if (symbolStr) {
+      onFinish({ symbolStr: symbolStr, period: 30 })
+    }
+  }, [])
 
   const onFinish = (values) => {
     axios
@@ -30,6 +40,7 @@ const SymbolAnalysis = () => {
           </Button>
         </Form.Item>
       </Form>
+
       <Divider />
       <Row gutter={[16, 16]}>
         {data.map((item) => (

@@ -18,6 +18,7 @@ const items = [
   createItem('公司分析', '/symbol/analysis'),
   createItem('量价分析', '/vol/analysis'),
   createItem('行业分析', '/industry/analysis'),
+  createItem('实时量比', '/realtime/vol'),
 ]
 
 const AMenu = () => {

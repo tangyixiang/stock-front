@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Row, Col, Card, Typography, Segmented, Space } from 'antd'
 import axios from 'axios'
 import Industry from '../components/Industry'
-import SimpleVolTable from '../components/SimpleVolTable'
+import SimpleVolTable from '../components/RealTimeVolTable'
 import StockLHB from '../components/StockLHB'
 import HorizontalBarChart from '../components/HorizontalBarChart'
 import Wrapper from '../components/Wrapper'
@@ -12,7 +12,6 @@ import UpAndDownRank from '../components/UpAndDownRank'
 
 const Home = () => {
   const [industry, setIndustry] = useState()
-  const [realTimeVol, setRealTimeVol] = useState([])
   const [upAndDownCount, setUpAndDownCount] = useState({})
   const [lhbData, setLhbData] = useState([])
 
@@ -23,7 +22,7 @@ const Home = () => {
     axios
       .get('/api/cn/analysis/market/up/down')
       .then((res) => setUpAndDownCount(res.data))
-    axios.get('/api/cn/analysis/vol/up').then((res) => setRealTimeVol(res.data))
+
     axios.get('/api/cn/analysis/lhb').then((res) => setLhbData(res.data))
   }, [])
 
@@ -60,15 +59,11 @@ const Home = () => {
         市值范围
       </Typography.Title>
       <MarketDistribute />
-      <Row className="my-4" gutter={8}>
-        {realTimeVol.length > 0 && (
-          <Col span={24}>
-            <Card title={'实时量比'} bodyStyle={{ padding: 8 }}>
-              <SimpleVolTable data={realTimeVol} />
-            </Card>
-          </Col>
-        )}
-      </Row>
+      {/* <Row className="my-4" gutter={8}>
+        <Col span={24}>
+          <SimpleVolTable />
+        </Col>
+      </Row> */}
       <Row className="my-4" gutter={8}>
         <Col span={10}>
           <UpAndDownRank />
