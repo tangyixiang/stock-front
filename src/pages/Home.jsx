@@ -17,7 +17,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get('/api/cn/analysis/realtime/industry')
+      .get('/api/realtime/cn/industry')
       .then((res) => setIndustry(res.data))
     axios
       .get('/api/cn/analysis/market/up/down')

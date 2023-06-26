@@ -42,13 +42,13 @@ const RealTimeVolTable = () => {
   const [realTimeVol, setRealTimeVol] = useState([])
 
   useEffect(() => {
-    axios.get('/api/cn/analysis/vol/up').then((res) => setRealTimeVol(res.data))
+    axios.get('/api/realtime/cn/vol/up').then((res) => setRealTimeVol(res.data))
   }, [])
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       axios
-        .get('/api/cn/analysis/vol/up')
+        .get('/api/realtime/cn/vol/up')
         .then((res) => setRealTimeVol(res.data))
     }, 4000)
     return () => {
