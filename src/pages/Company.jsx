@@ -82,6 +82,7 @@ const Company = () => {
           },
           pageSize: pageInfo.pageSize,
           total: total,
+          showQuickJumper: true,
         }}
         header={<Typography.Title level={5}>数量:{total}</Typography.Title>}
         dataSource={data}

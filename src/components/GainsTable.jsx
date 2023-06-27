@@ -62,6 +62,7 @@ const GainsTable = (props) => {
             },
           }
         }}
+        pagination={{ showQuickJumper: true }}
       />
       {showInfo.symbol && (
         <SymbolCard

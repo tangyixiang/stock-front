@@ -96,7 +96,14 @@ function StockLHB(props) {
     // },
   ]
 
-  return <Table rowKey={'symbol'} dataSource={props.data} columns={columns} />
+  return (
+    <Table
+      rowKey={'symbol'}
+      dataSource={props.data}
+      columns={columns}
+      pagination={{ showQuickJumper: true }}
+    />
+  )
 }
 
 export default StockLHB

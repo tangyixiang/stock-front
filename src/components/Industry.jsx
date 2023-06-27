@@ -107,6 +107,7 @@ const Industry = (props) => {
             }, // 点击行
           }
         }}
+        pagination={{ showQuickJumper: true }}
       />
       <Modal
         open={modal}

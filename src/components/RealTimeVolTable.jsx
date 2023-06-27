@@ -69,6 +69,7 @@ const RealTimeVolTable = () => {
         rowKey={'symbol'}
         columns={columns}
         dataSource={realTimeVol}
+        pagination={{ showQuickJumper: true }}
       ></Table>
     </Wrapper>
   )

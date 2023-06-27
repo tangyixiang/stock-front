@@ -96,6 +96,7 @@ const IndustryDetail = (props) => {
       rowKey={'symbol'}
       dataSource={props.data}
       columns={industryColumns}
+      pagination={{ showQuickJumper: true }}
     />
   )
 }
