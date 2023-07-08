@@ -71,8 +71,8 @@ const barStyle = {
       },
     ],
     tooltip: {
-      showRule: 'none',
-      showType: 'rect',
+      showRule: 'follow_cross',
+      showType: 'standard',
     },
   },
   yAxis: {
@@ -112,7 +112,8 @@ const StockData = (props) => {
     })
     // paneId.current = chart.current?.createIndicator('VOL', true)
     chart.current?.createIndicator('VOL', true)
-    chart.current?.createIndicator('BOLL', false, { id: 'candle_pane' })
+    // chart.current?.createIndicator('BOLL', false, { id: 'candle_pane' })
+    chart.current?.createIndicator('MA', false, { id: 'candle_pane' })
     chart.current?.applyNewData(data)
     return () => {
       dispose(id)
