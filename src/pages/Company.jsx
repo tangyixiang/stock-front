@@ -11,7 +11,7 @@ import {
   Typography,
 } from 'antd'
 import StockData from '../components/StockData'
-import AFloatButton from '../components/AFloatButton'
+import AFloatButton from '../components/layout/AFloatButton'
 import Wrapper from '../components/Wrapper'
 
 const Company = () => {

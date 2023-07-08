@@ -55,7 +55,7 @@ const MarketDistribute = () => {
         onCancel={() => closeModal()}
         footer={null}
         title={'数据'}
-        width={'70%'}
+        width={'80%'}
       >
         <SimpleStockInfoTable data={marketDistributionDetail} />
       </Modal>

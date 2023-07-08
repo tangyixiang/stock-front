@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Table } from 'antd'
-import axios from 'axios'
+import CharWrapper from './stockchar/CharWrapper'
+import useModalStore from '../store/ModalStore'
 
 function StockLHB(props) {
+  const openModal = useModalStore((state) => state.openModal)
+
   const columns = [
     {
       title: '日期',
@@ -97,12 +100,24 @@ function StockLHB(props) {
   ]
 
   return (
-    <Table
-      rowKey={'symbol'}
-      dataSource={props.data}
-      columns={columns}
-      pagination={{ showQuickJumper: true }}
-    />
+    <>
+      <CharWrapper>
+        <Table
+          rowKey={'symbol'}
+          dataSource={props.data}
+          scroll={{ x: 2000 }}
+          onRow={(record) => {
+            return {
+              onClick: (event) => {
+                openModal(record.symbol)
+              },
+            }
+          }}
+          columns={columns}
+          pagination={{ showQuickJumper: true }}
+        />
+      </CharWrapper>
+    </>
   )
 }
 

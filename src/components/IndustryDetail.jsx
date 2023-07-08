@@ -1,5 +1,7 @@
 import React from 'react'
 import { Table, Tag } from 'antd'
+import CharWrapper from './stockchar/CharWrapper'
+import useModalStore from '../store/ModalStore'
 
 const industryColumns = [
   {
@@ -91,13 +93,25 @@ const industryColumns = [
 ]
 
 const IndustryDetail = (props) => {
+  const openModal = useModalStore((state) => state.openModal)
   return (
-    <Table
-      rowKey={'symbol'}
-      dataSource={props.data}
-      columns={industryColumns}
-      pagination={{ showQuickJumper: true }}
-    />
+    <>
+      <CharWrapper>
+        <Table
+          rowKey={'symbol'}
+          dataSource={props.data}
+          onRow={(record) => {
+            return {
+              onClick: (event) => {
+                openModal(record.symbol)
+              },
+            }
+          }}
+          columns={industryColumns}
+          pagination={{ showQuickJumper: true }}
+        />
+      </CharWrapper>
+    </>
   )
 }
 

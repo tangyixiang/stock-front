@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Row, Col, Card, Typography, Segmented, Space } from 'antd'
 import axios from 'axios'
 import Industry from '../components/Industry'
-import SimpleVolTable from '../components/RealTimeVolTable'
 import StockLHB from '../components/StockLHB'
 import HorizontalBarChart from '../components/HorizontalBarChart'
 import Wrapper from '../components/Wrapper'
-import GainsTable from '../components/GainsTable'
 import MarketDistribute from '../components/MarketDistribute'
 import UpAndDownRank from '../components/UpAndDownRank'
 
@@ -16,9 +14,7 @@ const Home = () => {
   const [lhbData, setLhbData] = useState([])
 
   useEffect(() => {
-    axios
-      .get('/api/realtime/cn/industry')
-      .then((res) => setIndustry(res.data))
+    axios.get('/api/realtime/cn/industry').then((res) => setIndustry(res.data))
     axios
       .get('/api/cn/analysis/market/up/down')
       .then((res) => setUpAndDownCount(res.data))
@@ -55,20 +51,21 @@ const Home = () => {
           </Card>
         </Col>
       </Row>
-      <Typography.Title level={5} className="px-2">
-        市值范围
-      </Typography.Title>
-      <MarketDistribute />
-      {/* <Row className="my-4" gutter={8}>
+      <Row>
         <Col span={24}>
-          <SimpleVolTable />
+          <Typography.Title level={5} className="px-2">
+            市值范围
+          </Typography.Title>
+          <MarketDistribute />
         </Col>
-      </Row> */}
+      </Row>
       <Row className="my-4" gutter={8}>
-        <Col span={10}>
+        <Col span={24}>
           <UpAndDownRank />
         </Col>
-        <Col span={14}>
+      </Row>
+      <Row className="my-4" gutter={8}>
+        <Col span={24}>
           <Card title={'今日板块'} bodyStyle={{ padding: 8 }}>
             <Industry data={industry} showPage />
           </Card>

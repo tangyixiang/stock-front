@@ -66,7 +66,7 @@ const SymbolCard = (props) => {
         <Button onClick={openXueqiu}>雪球</Button>
         <Button onClick={openFutu}>富途</Button>
       </Space>
-      <div className="h-80">{data && <StockData data={data} />}</div>
+      {data && <StockData data={data} highClass={'h-[450px]'} />}
     </Modal>
   )
 }

@@ -1,5 +1,7 @@
 import React from 'react'
 import { Table } from 'antd'
+import CharWrapper from './stockchar/CharWrapper'
+import useModalStore from '../store/ModalStore'
 
 const stockInfoColumns = [
   {
@@ -25,14 +27,26 @@ const stockInfoColumns = [
 ]
 
 const SimpleStockInfoTable = (props) => {
+  const openModal = useModalStore((state) => state.openModal)
   return (
-    <Table
-      rowKey={'symbol'}
-      dataSource={props.data}
-      size="small"
-      columns={stockInfoColumns}
-      pagination={{ pageSize: 15 }}
-    />
+    <>
+      <CharWrapper>
+        <Table
+          rowKey={'symbol'}
+          dataSource={props.data}
+          onRow={(record) => {
+            return {
+              onClick: (event) => {
+                openModal(record.symbol)
+              },
+            }
+          }}
+          size="small"
+          columns={stockInfoColumns}
+          pagination={{ pageSize: 15 }}
+        />
+      </CharWrapper>
+    </>
   )
 }
 

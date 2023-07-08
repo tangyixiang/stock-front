@@ -115,7 +115,7 @@ const Industry = (props) => {
         onCancel={() => closeModal()}
         footer={null}
         title={'数据'}
-        width={'70%'}
+        width={'80%'}
       >
         <IndustryDetail data={detail} />
       </Modal>

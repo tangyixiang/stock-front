@@ -19,7 +19,7 @@ import {
 import axios from 'axios'
 import dayjs from 'dayjs'
 import StockData from '../components/StockData'
-import AFloatButton from '../components/AFloatButton'
+import AFloatButton from '../components/layout/AFloatButton'
 import Wrapper from '../components/Wrapper'
 
 const columns = [

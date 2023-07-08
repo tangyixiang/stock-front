@@ -14,7 +14,7 @@ import {
 import axios from 'axios'
 import dayjs from 'dayjs'
 import StockCard from '../components/StockCard'
-import AFloatButton from '../components/AFloatButton'
+import AFloatButton from '../components/layout/AFloatButton'
 import Wrapper from '../components/Wrapper'
 
 const VolUp = () => {
