@@ -10,6 +10,7 @@ const SymbolAnalysis = (props) => {
   const [form] = Form.useForm()
   const [searchParams, setSearchParams] = useSearchParams()
   const [symbolList, setSymbolList] = useState([])
+  const [num, setNum] = useState(0)
 
   useEffect(() => {
     const symbolStr = searchParams.get('symbolStr')
@@ -33,14 +34,16 @@ const SymbolAnalysis = (props) => {
 
   const getSymbolList = (v) => {
     axios.get(v).then((res) => {
-      onFinish(res.data.join(','))
+      setNum(res.data.length)
+      const params = { symbolStr: res.data.join(','), period: 90 }
+      onFinish(params)
     })
   }
 
   return (
     <Wrapper>
       <Form form={form} layout={'inline'} onFinish={onFinish}>
-        <Form.Item label="代码(字符)" name="symbolStr">
+        <Form.Item label="技术类型" name="techName">
           <Select
             style={{
               width: 180,
@@ -57,6 +60,7 @@ const SymbolAnalysis = (props) => {
             查询
           </Button>
         </Form.Item>
+        <Form.Item>总数:{num}</Form.Item>
       </Form>
 
       <Divider />
