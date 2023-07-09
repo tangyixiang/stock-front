@@ -17,6 +17,22 @@ const barStyle = {
       downWickColor: '#00A843',
       noChangeWickColor: '#888888',
     },
+    // 面积图
+    area: {
+      lineSize: 2,
+      lineColor: '#2196F3',
+      value: 'close',
+      backgroundColor: [
+        {
+          offset: 0,
+          color: 'rgba(33, 150, 243, 0.01)',
+        },
+        {
+          offset: 1,
+          color: 'rgba(33, 150, 243, 0.2)',
+        },
+      ],
+    },
     tooltip: {
       showRule: 'follow_cross',
       showType: 'rect',
@@ -113,7 +129,7 @@ const StockData = (props) => {
     // paneId.current = chart.current?.createIndicator('VOL', true)
     chart.current?.createIndicator('VOL', true)
     // chart.current?.createIndicator('BOLL', false, { id: 'candle_pane' })
-    chart.current?.createIndicator('MA', false, { id: 'candle_pane' })
+    chart.current?.createIndicator('EMA', false, { id: 'candle_pane' })
     chart.current?.applyNewData(data)
     return () => {
       dispose(id)
@@ -121,8 +137,13 @@ const StockData = (props) => {
   }, [])
 
   useEffect(() => {
+    if (props.type == 'Area') {
+      barStyle.candle.type = 'area'
+    } else {
+      barStyle.candle.type = 'candle_up_stroke'
+    }
     chart.current?.setStyles(barStyle)
-  }, [])
+  }, [props])
 
   const classNames = ['w-full']
   if (props.highClass) {

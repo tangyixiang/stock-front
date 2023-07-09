@@ -12,6 +12,8 @@ export function getSymbolOfMarket(symbol) {
     type = 'SZ'
   } else if (symbol.startsWith('200')) {
     type = 'SZ'
+  } else if (symbol.startsWith('301')) {
+    type = 'SZ'
   }
   return type
 }

@@ -45,7 +45,6 @@ const GainsTable = (props) => {
   const [showInfo, setshowInfo] = useState({ symbol: '', open: false })
 
   const close = () => {
-    console.log('运行')
     setshowInfo({ ...showInfo, open: false })
   }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Modal, Space, Typography, Button } from 'antd'
+import { Modal, Space, Typography, Button, Row, Col, Segmented } from 'antd'
 import StockData from './StockData'
 import { getSymbolOfMarket } from '../helper/MarketHelper'
 
@@ -10,6 +10,7 @@ const SymbolCard = (props) => {
   const [info, setInfo] = useState({})
   const [title, setTitle] = useState('')
   const [data, setData] = useState()
+  const [stockType, setStockType] = useState('Bar')
 
   useEffect(() => {
     axios
@@ -58,15 +59,31 @@ const SymbolCard = (props) => {
       width={'70%'}
       centered
     >
-      <Typography>
-        <Title level={5}>主营业务</Title>
-        <Paragraph>{info.description}</Paragraph>
-      </Typography>
-      <Space wrap>
-        <Button onClick={openXueqiu}>雪球</Button>
-        <Button onClick={openFutu}>富途</Button>
-      </Space>
-      {data && <StockData data={data} highClass={'h-[450px]'} />}
+      <Row>
+        <Typography>
+          <Title level={5}>主营业务</Title>
+          <Paragraph>{info.description}</Paragraph>
+        </Typography>
+      </Row>
+      <Row>
+        <Col span={2}>
+          <Button onClick={openXueqiu}>雪球</Button>
+        </Col>
+        <Col span={2}>
+          <Button onClick={openFutu}>富途</Button>
+        </Col>
+        <Col span={2} offset={17}>
+          <Segmented
+            defaultValue="Bar"
+            options={['Bar', 'Area']}
+            onChange={(v) => setStockType(v)}
+          />
+        </Col>
+      </Row>
+
+      {data && (
+        <StockData data={data} highClass={'h-[450px]'} type={stockType} />
+      )}
     </Modal>
   )
 }

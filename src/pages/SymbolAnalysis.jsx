@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Divider, Form, Input, Button, Row, Col, Card } from 'antd'
+import { Divider, Form, Input, Button, Row, Col, Card, Select } from 'antd'
 import axios from 'axios'
 import StockData from '../components/StockData'
 import Wrapper from '../components/Wrapper'
@@ -9,9 +9,9 @@ const SymbolAnalysis = (props) => {
   const [data, setData] = useState([])
   const [form] = Form.useForm()
   const [searchParams, setSearchParams] = useSearchParams()
+  const [symbolList, setSymbolList] = useState([])
 
   useEffect(() => {
-    console.log('运行')
     const symbolStr = searchParams.get('symbolStr')
     if (symbolStr) {
       onFinish({ symbolStr: symbolStr, period: 30 })
@@ -27,11 +27,29 @@ const SymbolAnalysis = (props) => {
         setData(res.data)
       })
   }
+  const options = [
+    { label: 'EMA5日突破', value: '/api/tech/analysis/breakthrough/5days' },
+  ]
+
+  const getSymbolList = (v) => {
+    axios.get(v).then((res) => {
+      onFinish(res.data.join(','))
+    })
+  }
 
   return (
     <Wrapper>
       <Form form={form} layout={'inline'} onFinish={onFinish}>
-        <Form.Item label="代码" name="symbolStr">
+        <Form.Item label="代码(字符)" name="symbolStr">
+          <Select
+            style={{
+              width: 180,
+            }}
+            options={options}
+            onChange={getSymbolList}
+          />
+        </Form.Item>
+        <Form.Item label="代码(字符)" name="symbolStr">
           <Input allowClear />
         </Form.Item>
         <Form.Item>
