@@ -29,15 +29,38 @@ const SymbolAnalysis = (props) => {
       })
   }
   const options = [
-    { label: 'EMA5日突破', value: '/api/tech/analysis/breakthrough/5days' },
+    {
+      label: 'EMA5日突破',
+      value: JSON.stringify({
+        url: '/api/tech/analysis/breakthrough/5days',
+        method: 'get',
+      }),
+    },
+    {
+      label: 'EMV启动',
+      value: JSON.stringify({
+        url: '/api2/tech/analysis/emv/filter',
+        method: 'post',
+        params: {
+          start_mark_value: 50,
+          end_mark_value: 100,
+          start_value: 0,
+        },
+      }),
+    },
   ]
 
-  const getSymbolList = (v) => {
-    axios.get(v).then((res) => {
-      setNum(res.data.length)
-      const params = { symbolStr: res.data.join(','), period: 90 }
-      onFinish(params)
-    })
+  const getSymbolList = async (data) => {
+    const request = JSON.parse(data)
+    let res
+    if (request.method == 'get') {
+      res = await axios.get(request.url)
+    } else {
+      res = await axios.post(request.url, request.params)
+    }
+    setNum(res.data.length)
+    const params = { symbolStr: res.data.join(','), period: 90 }
+    onFinish(params)
   }
 
   return (
