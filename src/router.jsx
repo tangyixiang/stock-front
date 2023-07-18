@@ -8,6 +8,8 @@ import IndustryAnalysis from './pages/IndustryAnalysis'
 import SymbolAnalysis from './pages/SymbolAnalysis'
 import RealTimeVolTable from './components/RealTimeVolTable'
 import PankouChange from './pages/PankouChange'
+import USCompany from './pages/us/USCompany'
+import USSymbolAnalysis from './pages/us/USSymbolAnalysis'
 
 // 路由
 const router = createHashRouter([
@@ -23,6 +25,8 @@ const router = createHashRouter([
       { path: '/symbol/analysis', element: <SymbolAnalysis /> },
       { path: '/realtime/vol', element: <RealTimeVolTable /> },
       { path: '/pankou/change', element: <PankouChange /> },
+      { path: '/us/symbol/list', element: <USCompany /> },
+      { path: '/us/symbol/analysis', element: <USSymbolAnalysis /> },
     ],
   },
 ])

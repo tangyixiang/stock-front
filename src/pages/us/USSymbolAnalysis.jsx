@@ -11,11 +11,11 @@ import {
   Spin,
 } from 'antd'
 import axios from 'axios'
-import StockData from '../components/StockData'
-import Wrapper from '../components/Wrapper'
+import StockData from '../../components/StockData'
+import Wrapper from '../../components/Wrapper'
 import { useSearchParams } from 'react-router-dom'
 
-const SymbolAnalysis = (props) => {
+const USSymbolAnalysis = (props) => {
   const [data, setData] = useState([])
   const [form] = Form.useForm()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -31,7 +31,7 @@ const SymbolAnalysis = (props) => {
 
   const onFinish = (values) => {
     axios
-      .get('/api/cn/collection/symbol/data', {
+      .get('/api/us/collection/symbol/data', {
         params: values,
       })
       .then((res) => {
@@ -40,28 +40,9 @@ const SymbolAnalysis = (props) => {
   }
   const options = [
     {
-      label: 'EMA5日突破',
-      value: JSON.stringify({
-        url: '/api/tech/analysis/breakthrough/5days',
-        method: 'get',
-      }),
-    },
-    {
-      label: 'EMV启动',
-      value: JSON.stringify({
-        url: '/api2/tech/analysis/emv/filter',
-        method: 'post',
-        params: {
-          start_mark_value: 50,
-          end_mark_value: 100,
-          start_value: 0,
-        },
-      }),
-    },
-    {
       label: '超级趋势',
       value: JSON.stringify({
-        url: '/api2/tech/analysis/trend/buy',
+        url: '/api2/tech/analysis/trend/buy?type=us',
         method: 'get',
       }),
     },
@@ -121,7 +102,7 @@ const SymbolAnalysis = (props) => {
                 boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
               }}
             >
-              <StockData data={item.data} />
+              <StockData data={item.usData} />
             </Card>
           </Col>
         ))}
@@ -130,4 +111,4 @@ const SymbolAnalysis = (props) => {
   )
 }
 
-export default SymbolAnalysis
+export default USSymbolAnalysis

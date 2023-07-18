@@ -22,6 +22,11 @@ const items = [
     createItem('盘口异动', '/pankou/change'),
     createItem('实时量比', '/realtime/vol'),
   ]),
+  createItem('美国', '/us', '', [
+    createItem('公司列表', '/us/symbol/list'),
+    createItem('公司分析', '/us/symbol/analysis'),
+    createItem('量价分析', '/us/vol/analysis'),
+  ]),
 ]
 
 const AMenu = () => {
