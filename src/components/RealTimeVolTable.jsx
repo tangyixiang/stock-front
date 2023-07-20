@@ -10,6 +10,10 @@ const columns = [
     dataIndex: 'symbol',
   },
   {
+    title: '名称',
+    dataIndex: 'name',
+  },
+  {
     title: '最新价',
     dataIndex: 'price',
   },
