@@ -30,13 +30,11 @@ const SymbolAnalysis = (props) => {
   }, [])
 
   const onFinish = (values) => {
-    axios
-      .get('/api/cn/collection/symbol/data', {
-        params: values,
-      })
-      .then((res) => {
-        setData(res.data)
-      })
+    values.symbolList = JSON.parse(values.symbolList)
+    console.log(values)
+    axios.post('/api/cn/collection/symbol/data', values).then((res) => {
+      setData(res.data)
+    })
   }
   const options = [
     {
@@ -61,7 +59,14 @@ const SymbolAnalysis = (props) => {
     {
       label: '超级趋势',
       value: JSON.stringify({
-        url: '/api2/tech/analysis/trend/buy',
+        url: '/api2/tech/analysis/trend/buy?type=cn',
+        method: 'get',
+      }),
+    },
+    {
+      label: '4根相同K线',
+      value: JSON.stringify({
+        url: '/api2/tech/analysis/4ksame?type=cn',
         method: 'get',
       }),
     },
@@ -95,6 +100,9 @@ const SymbolAnalysis = (props) => {
           />
         </Form.Item>
         <Form.Item label="代码(字符)" name="symbolStr">
+          <Input allowClear />
+        </Form.Item>
+        <Form.Item label="代码(数组)" name="symbolList">
           <Input allowClear />
         </Form.Item>
         <Form.Item>
