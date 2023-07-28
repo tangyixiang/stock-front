@@ -5,36 +5,30 @@ import GainsTable from './GainsTable'
 
 const UpAndDownRank = () => {
   const [conditionData, setConditionData] = useState({
-    up: true,
-    type: 'd',
+    marketType: 'cn',
+    gainsType: '1',
+    periodType: 'd',
     period: 5,
   })
   const [gainsData, setGainsData] = useState([])
 
   useEffect(() => {
-    const { up, type, period } = conditionData
-    const url = up
-      ? '/api/cn/analysis/gains/increase/list'
-      : '/api/cn/analysis/gains/decrease/list'
-    giansList(url, type, period)
+    giansList(conditionData)
   }, [conditionData])
 
   //TODO watch 变量修改
   const changeUpState = (v) => {
     if (v == '涨') {
-      setConditionData({ ...conditionData, up: true })
+      setConditionData({ ...conditionData, gainsType: '1' })
     } else {
-      setConditionData({ ...conditionData, up: false })
+      setConditionData({ ...conditionData, gainsType: '2' })
     }
   }
 
   const giansList = (url, type, period) => {
     axios
-      .get(url, {
-        params: {
-          type: type,
-          period: period,
-        },
+      .get('/api/tech/analysis/gains/list', {
+        params: conditionData,
       })
       .then((res) => setGainsData(res.data))
   }
