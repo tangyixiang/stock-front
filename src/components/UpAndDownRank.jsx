@@ -3,9 +3,8 @@ import { Card, Segmented, Space } from 'antd'
 import axios from 'axios'
 import GainsTable from './GainsTable'
 
-const UpAndDownRank = () => {
+const UpAndDownRank = (props) => {
   const [conditionData, setConditionData] = useState({
-    marketType: 'cn',
     gainsType: '1',
     periodType: 'd',
     period: 5,
@@ -13,7 +12,7 @@ const UpAndDownRank = () => {
   const [gainsData, setGainsData] = useState([])
 
   useEffect(() => {
-    giansList(conditionData)
+    giansList()
   }, [conditionData])
 
   //TODO watch 变量修改
@@ -25,10 +24,10 @@ const UpAndDownRank = () => {
     }
   }
 
-  const giansList = (url, type, period) => {
+  const giansList = () => {
     axios
       .get('/api/tech/analysis/gains/list', {
-        params: conditionData,
+        params: { marketType: props.type, ...conditionData },
       })
       .then((res) => setGainsData(res.data))
   }

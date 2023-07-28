@@ -6,15 +6,23 @@ import { getSymbolOfMarket } from '../helper/MarketHelper'
 
 const { Title, Paragraph } = Typography
 
+function isAllDigits(str) {
+  return /^\d+$/.test(str)
+}
+
 const SymbolCard = (props) => {
   const [info, setInfo] = useState({})
   const [title, setTitle] = useState('')
   const [data, setData] = useState()
   const [stockType, setStockType] = useState('Bar')
 
+  const marketType = isAllDigits(props.symbol) ? 'cn' : 'us'
+
   useEffect(() => {
     axios
-      .get('/api/cn/symbol/info', { params: { symbol: props.symbol } })
+      .get(`/api/${marketType}/symbol/info`, {
+        params: { symbol: props.symbol },
+      })
       .then((res) => {
         const data = res.data
         setInfo(res.data)
@@ -25,7 +33,7 @@ const SymbolCard = (props) => {
       })
 
     axios
-      .get('/api/cn/symbol/history/data', {
+      .get(`/api/${marketType}/symbol/history/data`, {
         params: { symbol: props.symbol, period: 500 },
       })
       .then((res) => setData(res.data))

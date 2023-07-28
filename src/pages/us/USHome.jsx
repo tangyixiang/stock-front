@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Row, Col, Card, Typography, Segmented, Space } from 'antd'
 import axios from 'axios'
-import Industry from '../components/Industry'
-import StockLHB from '../components/StockLHB'
-import HorizontalBarChart from '../components/HorizontalBarChart'
-import Wrapper from '../components/Wrapper'
-import MarketDistribute from '../components/MarketDistribute'
-import UpAndDownRank from '../components/UpAndDownRank'
+import HorizontalBarChart from '../../components/HorizontalBarChart'
+import Wrapper from '../../components/Wrapper'
+import MarketDistribute from '../../components/MarketDistribute'
+import UpAndDownRank from '../../components/UpAndDownRank'
 
 const USHome = () => {
-  const [industry, setIndustry] = useState()
   const [upAndDownCount, setUpAndDownCount] = useState({})
-  const [lhbData, setLhbData] = useState([])
+  const [marketType, setMarketType] = useState('us')
 
   useEffect(() => {
     axios
@@ -53,12 +50,12 @@ const USHome = () => {
           <Typography.Title level={5} className="px-2">
             市值范围
           </Typography.Title>
-          <MarketDistribute />
+          <MarketDistribute type={marketType} />
         </Col>
       </Row>
       <Row className="my-4" gutter={8}>
         <Col span={24}>
-          <UpAndDownRank />
+          <UpAndDownRank type={marketType} />
         </Col>
       </Row>
     </Wrapper>

@@ -12,6 +12,7 @@ const Home = () => {
   const [industry, setIndustry] = useState()
   const [upAndDownCount, setUpAndDownCount] = useState({})
   const [lhbData, setLhbData] = useState([])
+  const [marketType, setMarketType] = useState('cn')
 
   useEffect(() => {
     axios.get('/api/realtime/cn/industry').then((res) => setIndustry(res.data))
@@ -56,12 +57,12 @@ const Home = () => {
           <Typography.Title level={5} className="px-2">
             市值范围
           </Typography.Title>
-          <MarketDistribute />
+          <MarketDistribute type={marketType} />
         </Col>
       </Row>
       <Row className="my-4" gutter={8}>
         <Col span={24}>
-          <UpAndDownRank />
+          <UpAndDownRank type={marketType} />
         </Col>
       </Row>
       <Row className="my-4" gutter={8}>

@@ -5,7 +5,7 @@ import { getText } from '../helper/MarketValueTextHelper'
 import SimpleStockInfoTable from './SimpleStockInfoTable'
 import StockData from './StockData'
 
-const MarketDistribute = () => {
+const MarketDistribute = (props) => {
   const [marketDistribution, setMarketDistribution] = useState({})
 
   const [modal, setModal] = useState(false)
@@ -15,14 +15,14 @@ const MarketDistribute = () => {
 
   useEffect(() => {
     axios
-      .get('/api/cn/analysis/market/value/distribution')
+      .get(`/api/${props.type}/analysis/market/value/distribution`)
       .then((res) => setMarketDistribution(res.data))
   }, [])
 
   const showDistributeDetail = (key) => {
     setModal(true)
     axios
-      .get('/api/cn/analysis/market/value/distribution/detail', {
+      .get(`/api/${props.type}/analysis/market/value/distribution/detail`, {
         params: { type: key },
       })
       .then((res) => setMarketDistributionDetail(res.data))
@@ -32,7 +32,7 @@ const MarketDistribute = () => {
     setShowMarketChart(true)
     const symbolList = marketDistributionDetail.map((item) => item.symbol)
     axios
-      .post('/api/cn/collection/symbol/data', {
+      .post(`/api/${props.type}/collection/symbol/data`, {
         symbolList: symbolList,
         period: 180,
       })

@@ -10,6 +10,7 @@ import RealTimeVolTable from './components/RealTimeVolTable'
 import PankouChange from './pages/PankouChange'
 import USCompany from './pages/us/USCompany'
 import USSymbolAnalysis from './pages/us/USSymbolAnalysis'
+import USHome from './pages/us/USHome'
 
 // 路由
 const router = createHashRouter([
@@ -19,6 +20,7 @@ const router = createHashRouter([
     children: [
       { index: true, element: <Home /> },
       { path: '/home', element: <Home /> },
+      { path: '/ushome', element: <USHome /> },
       { path: '/symbol/list', element: <Company /> },
       { path: '/vol/analysis', element: <VolAnalysis /> },
       { path: '/industry/analysis', element: <IndustryAnalysis /> },
