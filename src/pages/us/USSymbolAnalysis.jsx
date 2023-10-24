@@ -30,13 +30,12 @@ const USSymbolAnalysis = (props) => {
   }, [])
 
   const onFinish = (values) => {
-    axios
-      .get('/api/us/collection/symbol/data', {
-        params: values,
-      })
-      .then((res) => {
-        setData(res.data)
-      })
+    if (values.symbolList) {
+      values.symbolList = JSON.parse(values.symbolList)
+    }
+    axios.post('/api/us/collection/symbol/data', values).then((res) => {
+      setData(res.data)
+    })
   }
   const options = [
     {
@@ -76,6 +75,9 @@ const USSymbolAnalysis = (props) => {
           />
         </Form.Item>
         <Form.Item label="代码(字符)" name="symbolStr">
+          <Input allowClear />
+        </Form.Item>
+        <Form.Item label="代码(数组)" name="symbolList">
           <Input allowClear />
         </Form.Item>
         <Form.Item>

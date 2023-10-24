@@ -27,6 +27,7 @@ const items = [
     createItem('公司列表', '/us/symbol/list'),
     createItem('公司分析', '/us/symbol/analysis'),
     createItem('量价分析', '/us/vol/analysis'),
+    createItem('QQQ分析', '/us/analysis/qqq'),
   ]),
 ]
 

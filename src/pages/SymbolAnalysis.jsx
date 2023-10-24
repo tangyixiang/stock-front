@@ -30,7 +30,9 @@ const SymbolAnalysis = (props) => {
   }, [])
 
   const onFinish = (values) => {
-    values.symbolList = JSON.parse(values.symbolList)
+    if (values.symbolList) {
+      values.symbolList = JSON.parse(values.symbolList)
+    }
     console.log(values)
     axios.post('/api/cn/collection/symbol/data', values).then((res) => {
       setData(res.data)

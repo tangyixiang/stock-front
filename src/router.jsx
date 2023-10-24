@@ -11,6 +11,7 @@ import PankouChange from './pages/PankouChange'
 import USCompany from './pages/us/USCompany'
 import USSymbolAnalysis from './pages/us/USSymbolAnalysis'
 import USHome from './pages/us/USHome'
+import USQQQ from './pages/us/USQQQ'
 
 // 路由
 const router = createHashRouter([
@@ -29,6 +30,7 @@ const router = createHashRouter([
       { path: '/pankou/change', element: <PankouChange /> },
       { path: '/us/symbol/list', element: <USCompany /> },
       { path: '/us/symbol/analysis', element: <USSymbolAnalysis /> },
+      { path: '/us/analysis/qqq', element: <USQQQ /> },
     ],
   },
 ])
