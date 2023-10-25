@@ -29,6 +29,9 @@ const items = [
     createItem('量价分析', '/us/vol/analysis'),
     createItem('QQQ分析', '/us/analysis/qqq'),
   ]),
+  createItem('模拟', '/practice', '', [
+    createItem('QQQ练习', '/practice/qqq'),
+  ]),
 ]
 
 const AMenu = () => {

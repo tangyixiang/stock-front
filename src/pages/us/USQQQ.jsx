@@ -15,7 +15,6 @@ import {
   message,
 } from 'antd'
 import Wrapper from '../../components/Wrapper'
-import TextArea from 'antd/es/input/TextArea'
 
 const USQQQ = () => {
   const [data, setData] = useState([])

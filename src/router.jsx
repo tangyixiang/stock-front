@@ -12,6 +12,7 @@ import USCompany from './pages/us/USCompany'
 import USSymbolAnalysis from './pages/us/USSymbolAnalysis'
 import USHome from './pages/us/USHome'
 import USQQQ from './pages/us/USQQQ'
+import QQQPractice from './pages/practice/QQQPractice'
 
 // 路由
 const router = createHashRouter([
@@ -31,6 +32,7 @@ const router = createHashRouter([
       { path: '/us/symbol/list', element: <USCompany /> },
       { path: '/us/symbol/analysis', element: <USSymbolAnalysis /> },
       { path: '/us/analysis/qqq', element: <USQQQ /> },
+      { path: '/practice/qqq', element: <QQQPractice /> },
     ],
   },
 ])

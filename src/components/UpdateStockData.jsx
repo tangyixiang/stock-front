@@ -45,21 +45,12 @@ const barStyle = {
       },
       custom: (data, styles) => {
         const { current } = data
-        const temp = current.turnover / 10000
         return [
-          { title: current.date, value: '' },
+          { title: current.time, value: '' },
           { title: 'open', value: current.open },
           { title: 'close', value: current.close },
           { title: 'high', value: current.high },
           { title: 'low', value: current.low },
-          { title: 'volume', value: current.volume },
-          {
-            title: '成交额:',
-            value:
-              temp > 10000
-                ? (temp / 10000).toFixed(2) + '亿'
-                : temp.toFixed(2) + '万',
-          },
           {
             title: '涨幅:',
             value: {
@@ -67,7 +58,6 @@ const barStyle = {
               color: current.diffPer < 0 ? '#10B981' : '#EF4444',
             },
           },
-          { title: '换手率:', value: current.exchangeRate },
         ]
       },
     },
@@ -93,35 +83,18 @@ const barStyle = {
   },
 }
 
-const StockData = (props) => {
+const UpdateStockData = (props) => {
   const chart = useRef()
   const paneId = useRef('')
   const id = useId()
 
   useEffect(() => {
     const data = props.data
-    data.forEach((item) => {
-      item.timestamp = new Date(item.date).getTime()
-      item.volume = item.tradeVol
-      item.turnover = item.tradeQuota
-    })
-
     chart.current = init(id, {
       locale: 'zh-CN',
-      customApi: {
-        formatBigNumber: (values) => {
-          const data = values / 10000
-          if (data > 100000) {
-            return (data / 10000).toFixed(2) + '亿'
-          } else {
-            return data.toFixed(2) + '万'
-          }
-        },
-      },
+      timezone: 'UTC',
     })
-    // paneId.current = chart.current?.createIndicator('VOL', true)
-    chart.current?.zoomAtCoordinate(2)
-    chart.current?.createIndicator('VOL', true)
+    chart.current?.zoomAtCoordinate(7)
     chart.current?.applyNewData(data)
     return () => {
       dispose(id)
@@ -129,18 +102,15 @@ const StockData = (props) => {
   }, [])
 
   useEffect(() => {
+    chart.current?.applyNewData(props.data)
+  }, [props.data])
+
+  useEffect(() => {
     if (props.type == 'Area') {
       barStyle.candle.type = 'area'
     } else {
       barStyle.candle.type = 'candle_up_stroke'
     }
-    const data = props.data
-    data.forEach((item) => {
-      item.timestamp = new Date(item.date).getTime()
-      item.volume = item.tradeVol
-      item.turnover = item.tradeQuota
-    })
-    chart.current?.applyNewData(data)
     chart.current?.setStyles(barStyle)
   }, [props])
 
@@ -154,4 +124,4 @@ const StockData = (props) => {
   // style={{ width: '620px', height: '440px' }}
 }
 
-export default StockData
+export default UpdateStockData
