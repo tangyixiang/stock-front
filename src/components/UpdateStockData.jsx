@@ -46,7 +46,7 @@ const barStyle = {
       custom: (data, styles) => {
         const { current } = data
         return [
-          { title: current.time, value: '' },
+          { title: `${current.date} ${current.time}`, value: '' },
           { title: 'open', value: current.open },
           { title: 'close', value: current.close },
           { title: 'high', value: current.high },
@@ -89,19 +89,25 @@ const UpdateStockData = (props) => {
   const id = useId()
 
   useEffect(() => {
-    const data = props.data
+    props.data.forEach((item) => {
+      item.volume = item.vol
+    })
     chart.current = init(id, {
       locale: 'zh-CN',
       timezone: 'UTC',
     })
-    chart.current?.zoomAtCoordinate(7)
-    chart.current?.applyNewData(data)
+    chart.current?.zoomAtCoordinate(6)
+    chart.current?.createIndicator('VOL', true)
+    chart.current?.applyNewData(props.data)
     return () => {
       dispose(id)
     }
   }, [])
 
   useEffect(() => {
+    props.data.forEach((item) => {
+      item.volume = item.vol
+    })
     chart.current?.applyNewData(props.data)
   }, [props.data])
 
