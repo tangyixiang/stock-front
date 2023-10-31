@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Wrapper from '../../components/Wrapper'
-import { InputNumber, Button, Row, Col, Card, Input, Form, Divider } from 'antd'
+import {
+  InputNumber,
+  Button,
+  Row,
+  Col,
+  Card,
+  Input,
+  Form,
+  Divider,
+  Select,
+} from 'antd'
 import axios from 'axios'
 import StockData from '../../components/StockData'
 
@@ -11,7 +21,7 @@ function SymbolDailyPractice() {
 
   const getDayData = (values) => {
     axios
-      .get(`/api/us/symbol/history/data`, {
+      .get(`/api/${values.type}/symbol/history/data`, {
         params: { symbol: values.symbol, period: 3000 },
       })
       .then((res) => {
@@ -41,10 +51,21 @@ function SymbolDailyPractice() {
   return (
     <Wrapper nobg>
       <Form onFinish={getDayData} layout="inline">
-        <Form.Item name="symbol" label="代码:">
+        <Form.Item name="type" label="类别">
+          <Select
+            style={{
+              width: 80,
+            }}
+            options={[
+              { label: '中国', value: 'cn' },
+              { label: '美国', value: 'us' },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item name="symbol" label="代码">
           <Input autoComplete="off" />
         </Form.Item>
-        <Form.Item name="index" label="开始序号:">
+        <Form.Item name="index" label="开始序号">
           <InputNumber
             autoComplete="off"
             style={{
