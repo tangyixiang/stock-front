@@ -13,6 +13,7 @@ import USSymbolAnalysis from './pages/us/USSymbolAnalysis'
 import USHome from './pages/us/USHome'
 import USQQQ from './pages/us/USQQQ'
 import QQQPractice from './pages/practice/QQQPractice'
+import SymbolDailyPractice from './pages/practice/SymbolDailyPractice'
 
 // 路由
 const router = createHashRouter([
@@ -33,6 +34,7 @@ const router = createHashRouter([
       { path: '/us/symbol/analysis', element: <USSymbolAnalysis /> },
       { path: '/us/analysis/qqq', element: <USQQQ /> },
       { path: '/practice/qqq', element: <QQQPractice /> },
+      { path: '/practice/daily', element: <SymbolDailyPractice /> },
     ],
   },
 ])

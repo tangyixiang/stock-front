@@ -31,6 +31,7 @@ const items = [
   ]),
   createItem('模拟', '/practice', '', [
     createItem('QQQ练习', '/practice/qqq'),
+    createItem('日K练习', '/practice/daily'),
   ]),
 ]
 

@@ -94,7 +94,7 @@ const UpdateStockData = (props) => {
     })
     chart.current = init(id, {
       locale: 'zh-CN',
-      timezone: 'UTC',
+      timezone: 'America/New_York',
     })
     chart.current?.zoomAtCoordinate(6)
     chart.current?.createIndicator('VOL', true)

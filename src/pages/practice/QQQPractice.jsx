@@ -12,6 +12,7 @@ import {
   Spin,
   message,
   Card,
+  Form,
 } from 'antd'
 import axios from 'axios'
 import StockData from '../../components/StockData'
@@ -175,19 +176,19 @@ function QQQPractice() {
 
   return (
     <Wrapper nobg>
-      <Space>
-        <Typography.Text>日期:</Typography.Text>
-        <DatePicker onChange={selectDate} format={'YYYY-MM-DD'} />
-        <Button type="primary" onClick={() => getDayData()}>
-          查询历史数据
-        </Button>
-        {/* <Button type="primary" onClick={() => getPracticeDay()}>
-          开始训练
-        </Button> */}
+      <Form layout="inline">
+        <Form.Item label="日期:">
+          <DatePicker onChange={selectDate} format={'YYYY-MM-DD'} />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" onClick={() => getDayData()}>
+            查询历史数据
+          </Button>
+        </Form.Item>
         <Button type="primary" danger onClick={() => reset()}>
           重置
         </Button>
-      </Space>
+      </Form>
       <Divider />
       {dailyData.length > 0 && (
         <Row gutter={12}>
