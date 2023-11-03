@@ -11,11 +11,13 @@ import {
   Spin,
 } from 'antd'
 import axios from 'axios'
+import dayjs from 'dayjs'
 import StockData from '../../components/StockData'
 import Wrapper from '../../components/Wrapper'
 import { useSearchParams } from 'react-router-dom'
 
 const USSymbolAnalysis = (props) => {
+  const today = dayjs().format('YYYY-MM-DD')
   const [data, setData] = useState([])
   const [form] = Form.useForm()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -45,6 +47,13 @@ const USSymbolAnalysis = (props) => {
         method: 'get',
       }),
     },
+    {
+      label: '反转K信号',
+      value: JSON.stringify({
+        url: `/api/tech/analysis/reverseK?marketType=us&date=${today}&marketValue=50`,
+        method: 'get',
+      }),
+    },
   ]
 
   const getSymbolList = async (data) => {
@@ -57,7 +66,7 @@ const USSymbolAnalysis = (props) => {
       res = await axios.post(request.url, request.params)
     }
     setNum(res.data.length)
-    const params = { symbolStr: res.data.join(','), period: 90 }
+    const params = { symbolStr: res.data.join(','), period: 200 }
     onFinish(params)
     setLoading(false)
   }

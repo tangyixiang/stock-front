@@ -23,8 +23,6 @@ const USQQQ = () => {
   const [detail, setDetail] = useState({})
   const [form] = Form.useForm()
 
-  //   useEffect(() => {}, [])
-
   const getData = () => {
     axios
       .get('/api/us/analysis/qqq/history', { params: { month: param } })
