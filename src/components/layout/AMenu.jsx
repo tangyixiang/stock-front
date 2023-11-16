@@ -15,6 +15,7 @@ function createItem(label, key, icon, children, type) {
 const items = [
   createItem('首页', '/home'),
   createItem('美国首页', '/ushome'),
+  createItem('技术选股', '/symbol/choose'),
   createItem('中国', '/china', '', [
     createItem('公司列表', '/symbol/list'),
     createItem('公司分析', '/symbol/analysis'),

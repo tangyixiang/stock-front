@@ -9,6 +9,7 @@ import {
   Card,
   Select,
   Spin,
+  message,
 } from 'antd'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -76,9 +77,9 @@ const SymbolAnalysis = (props) => {
       }),
     },
     {
-      label: '反转K信号',
+      label: '每日关注',
       value: JSON.stringify({
-        url: `/api/tech/analysis/reverseK?marketType=cn&date=${today}&marketValue=50`,
+        url: `/api/report/focus?marketType=cn&filter=1&highOpen=`,
         method: 'get',
       }),
     },
@@ -94,9 +95,15 @@ const SymbolAnalysis = (props) => {
       res = await axios.post(request.url, request.params)
     }
     setNum(res.data.length)
-    const params = { symbolStr: res.data.join(','), period: 200 }
+    const params = { symbolStr: res.data.join(','), period: 100 }
     onFinish(params)
     setLoading(false)
+  }
+
+  const addAlaram = (values) => {
+    axios
+      .post('/api/alarm/add', values)
+      .then((res) => message.success('添加成功'))
   }
 
   return (
@@ -140,6 +147,29 @@ const SymbolAnalysis = (props) => {
               style={{
                 boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
               }}
+              extra={
+                <Form layout="inline" onFinish={addAlaram}>
+                  <Form.Item
+                    name={'symbol'}
+                    initialValue={item.symbol}
+                    className="hidden"
+                  >
+                    <Input size="small" autoComplete="off" />
+                  </Form.Item>
+                  <Form.Item name={'price'} label="提醒价格">
+                    <Input
+                      size="small"
+                      autoComplete="off"
+                      style={{ width: 60 }}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button size="small" type="primary" htmlType="submit">
+                      确认
+                    </Button>
+                  </Form.Item>
+                </Form>
+              }
             >
               <StockData data={item.data} />
             </Card>

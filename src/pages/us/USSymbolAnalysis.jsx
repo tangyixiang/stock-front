@@ -47,13 +47,7 @@ const USSymbolAnalysis = (props) => {
         method: 'get',
       }),
     },
-    {
-      label: '反转K信号',
-      value: JSON.stringify({
-        url: `/api/tech/analysis/reverseK?marketType=us&date=${today}&marketValue=50`,
-        method: 'get',
-      }),
-    },
+    
   ]
 
   const getSymbolList = async (data) => {
@@ -113,7 +107,7 @@ const USSymbolAnalysis = (props) => {
                 boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
               }}
             >
-              <StockData data={item.usData} />
+              <StockData data={item.data} />
             </Card>
           </Col>
         ))}

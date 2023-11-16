@@ -1,6 +1,5 @@
 import { createHashRouter } from 'react-router-dom'
 import App from './App'
-import VolUp from './pages/VolUp'
 import Company from './pages/Company'
 import Home from './pages/Home'
 import VolAnalysis from './pages/VolAnalysis'
@@ -14,6 +13,8 @@ import USHome from './pages/us/USHome'
 import USQQQ from './pages/us/USQQQ'
 import QQQPractice from './pages/practice/QQQPractice'
 import SymbolDailyPractice from './pages/practice/SymbolDailyPractice'
+import UsVolAnalysis from './pages/us/UsVolAnalysis'
+import Choose from './pages/Choose'
 
 // 路由
 const router = createHashRouter([
@@ -28,10 +29,12 @@ const router = createHashRouter([
       { path: '/vol/analysis', element: <VolAnalysis /> },
       { path: '/industry/analysis', element: <IndustryAnalysis /> },
       { path: '/symbol/analysis', element: <SymbolAnalysis /> },
+      { path: '/symbol/choose', element: <Choose /> },
       { path: '/realtime/vol', element: <RealTimeVolTable /> },
       { path: '/pankou/change', element: <PankouChange /> },
       { path: '/us/symbol/list', element: <USCompany /> },
       { path: '/us/symbol/analysis', element: <USSymbolAnalysis /> },
+      { path: '/us/vol/analysis', element: <UsVolAnalysis /> },
       { path: '/us/analysis/qqq', element: <USQQQ /> },
       { path: '/practice/qqq', element: <QQQPractice /> },
       { path: '/practice/daily', element: <SymbolDailyPractice /> },

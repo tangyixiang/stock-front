@@ -13,22 +13,20 @@ import {
   Row,
   Col,
   Pagination,
-  Input,
 } from 'antd'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import StockData from '../components/StockData'
-import AFloatButton from '../components/layout/AFloatButton'
-import Wrapper from '../components/Wrapper'
+import AFloatButton from '../../components/layout/AFloatButton'
+import Wrapper from '../../components/Wrapper'
+import StockData from '../../components/StockData'
 
-const VolAnalysis = () => {
+const UsVolAnalysis = () => {
   const today = dayjs().format('YYYY-MM-DD')
   const [volData, setVolData] = useState([])
   const [pageInfo, setPageInfo] = useState({ pageSize: 20, pageNo: 1 })
   const [total, setTotal] = useState(0)
   // 上涨
   const [volType, setvolType] = useState(2)
-  const [diffPer, setDiffPer] = useState(20)
   const [date, setDate] = useState(today)
   const [info, setInfo] = useState('')
   const [loading, setLoading] = useState(false) // 初始状态为 -1，表示没有 Button 被激活
@@ -40,11 +38,10 @@ const VolAnalysis = () => {
   const getData = () => {
     setLoading(true)
     axios
-      .get('/api/cn/analysis/vol', {
+      .get('/api/us/analysis/vol', {
         params: {
           date: date,
           volType: volType,
-          diffPer: diffPer,
           pageSize: pageInfo.pageSize,
           pageNo: pageInfo.pageNo,
         },
@@ -71,10 +68,6 @@ const VolAnalysis = () => {
 
   const selectDate = (date, dateString) => {
     setDate(dateString)
-  }
-
-  const changeDiffer = (e) => {
-    setDiffPer(e.target.value)
   }
 
   const options = [
@@ -106,8 +99,6 @@ const VolAnalysis = () => {
               setvolType(value)
             }}
           ></Select>
-          <Typography.Text>涨幅以下:</Typography.Text>
-          <Input autoComplete="off" onChange={changeDiffer} />
           <Typography.Text>总数:</Typography.Text>
           <Typography.Text>{total}</Typography.Text>
           <Button
@@ -143,7 +134,7 @@ const VolAnalysis = () => {
                   </Space>
                 }
               >
-                <StockData data={item.data} />
+                <StockData data={item.usData} />
               </Card>
             </Col>
           ))}
@@ -170,4 +161,4 @@ const VolAnalysis = () => {
   )
 }
 
-export default VolAnalysis
+export default UsVolAnalysis
