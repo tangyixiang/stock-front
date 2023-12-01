@@ -83,6 +83,20 @@ const SymbolAnalysis = (props) => {
         method: 'get',
       }),
     },
+    {
+      label: 'EMA50',
+      value: JSON.stringify({
+        url: `/api/tech/analysis/ema?marketType=cn&num=50`,
+        method: 'get',
+      }),
+    },
+    {
+      label: 'EMA200',
+      value: JSON.stringify({
+        url: `/api/tech/analysis/ema?marketType=cn&num=200`,
+        method: 'get',
+      }),
+    },
   ]
 
   const getSymbolList = async (data) => {

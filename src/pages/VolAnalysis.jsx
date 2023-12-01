@@ -24,7 +24,7 @@ import Wrapper from '../components/Wrapper'
 const VolAnalysis = () => {
   const today = dayjs().format('YYYY-MM-DD')
   const [volData, setVolData] = useState([])
-  const [pageInfo, setPageInfo] = useState({ pageSize: 20, pageNo: 1 })
+  const [pageInfo, setPageInfo] = useState({ pageSize: 1000, pageNo: 1 })
   const [total, setTotal] = useState(0)
   // 上涨
   const [volType, setvolType] = useState(2)

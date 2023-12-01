@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Card, Statistic, Row, Col, Modal, Button } from 'antd'
 import { getText } from '../helper/MarketValueTextHelper'
 import SimpleStockInfoTable from './SimpleStockInfoTable'
-import StockData from './StockData'
+import GlobalStockData from './GlobalStockData'
 
 const MarketDistribute = (props) => {
   const [marketDistribution, setMarketDistribution] = useState({})
@@ -34,6 +34,7 @@ const MarketDistribute = (props) => {
     axios
       .post(`/api/${props.type}/collection/symbol/data`, {
         symbolList: symbolList,
+        realTime: false,
         period: 180,
       })
       .then((res) => {
@@ -96,7 +97,7 @@ const MarketDistribute = (props) => {
                     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
                   }}
                 >
-                  <StockData data={item.data} />
+                  <GlobalStockData data={item.data} />
                 </Card>
               </Col>
             ))}

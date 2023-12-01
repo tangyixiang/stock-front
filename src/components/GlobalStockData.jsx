@@ -93,7 +93,7 @@ const barStyle = {
   },
 }
 
-const StockData = (props) => {
+const GlobalStockData = (props) => {
   const chart = useRef()
   const paneId = useRef('')
   const id = useId()
@@ -120,6 +120,7 @@ const StockData = (props) => {
       },
     })
     // paneId.current = chart.current?.createIndicator('VOL', true)
+    chart.current?.setBarSpace(2)
     chart.current?.createIndicator('VOL', true)
     chart.current?.applyNewData(data)
     return () => {
@@ -153,4 +154,4 @@ const StockData = (props) => {
   // style={{ width: '620px', height: '440px' }}
 }
 
-export default StockData
+export default GlobalStockData

@@ -9,7 +9,10 @@ import {
   Input,
   InputNumber,
   Typography,
+  Row,
+  Col,
 } from 'antd'
+import GlobalStockData from '../../components/GlobalStockData'
 import StockData from '../../components/StockData'
 import AFloatButton from '../../components/layout/AFloatButton'
 import Wrapper from '../../components/Wrapper'
@@ -17,6 +20,7 @@ import Wrapper from '../../components/Wrapper'
 const USCompany = () => {
   const [pageInfo, setPageInfo] = useState({ pageSize: 20, pageNo: 1 })
   const [data, setData] = useState()
+  const [pageSymbolData, setPageSymbolData] = useState()
   const [company, setCompany] = useState()
   const [tempData, setTempData] = useState()
   const [total, setTotal] = useState(0)
@@ -32,6 +36,20 @@ const USCompany = () => {
       .then((res) => {
         setTotal(res.data.total)
         setData(res.data.list)
+        const symbolList = res.data.list.map((item) => item.symbol)
+
+        axios
+          .post('/api/us/collection/symbol/data', {
+            symbolList: symbolList,
+            period: 500,
+          })
+          .then((res) => {
+            const tempData = new Map()
+            res.data.forEach((item) => {
+              tempData.set(item.symbol, item.data)
+            })
+            setPageSymbolData(tempData)
+          })
       })
   }, [pageInfo, formValue])
 
@@ -97,7 +115,17 @@ const USCompany = () => {
               ).toFixed(2)}亿`}
               extra={<Button onClick={() => showModal(item)}>信息</Button>}
             >
-              {item.description}
+              <Row gutter={2}>
+                <Col span={8}>{item.description}</Col>
+                <Col span={12} offset={2}>
+                  {pageSymbolData && (
+                    <GlobalStockData
+                      data={pageSymbolData.get(item.symbol)}
+                      highClass={'h-[300px]'}
+                    />
+                  )}
+                </Col>
+              </Row>
             </Card>
           </List.Item>
         )}

@@ -15,7 +15,7 @@ const UpAndDownRank = (props) => {
     giansList()
   }, [conditionData])
 
-  //TODO watch 变量修改
+
   const changeUpState = (v) => {
     if (v == '涨') {
       setConditionData({ ...conditionData, gainsType: '1' })
