@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Table, Tag } from 'antd'
 import SymbolCard from './SymbolCard'
 
@@ -47,6 +47,10 @@ const GainsTable = (props) => {
   const close = () => {
     setshowInfo({ ...showInfo, open: false })
   }
+
+  useEffect(() => {
+    console.log(props.data)
+  }, [props])
 
   return (
     <>

@@ -54,7 +54,7 @@ const UpAndDownRank = (props) => {
       type = 'y'
       period = 1
     }
-    setConditionData({ ...conditionData, type: type, period: period })
+    setConditionData({ ...conditionData, periodType: type, period: period })
   }
 
   return (

@@ -61,6 +61,13 @@ const USSymbolAnalysis = (props) => {
         method: 'get',
       }),
     },
+    {
+        label: '标普500',
+        value: JSON.stringify({
+          url: `/api/tech/analysis/biaopu`,
+          method: 'get',
+        }),
+    }
   ]
 
   const getSymbolList = async (data) => {

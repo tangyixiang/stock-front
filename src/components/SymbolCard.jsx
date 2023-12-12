@@ -3,7 +3,6 @@ import axios from 'axios'
 import { Modal, Space, Typography, Button, Row, Col, Segmented } from 'antd'
 import StockData from './StockData'
 import { getSymbolOfMarket } from '../helper/MarketHelper'
-import GlobalStockData from './GlobalStockData'
 
 const { Title, Paragraph } = Typography
 
@@ -91,7 +90,7 @@ const SymbolCard = (props) => {
       </Row>
 
       {data && (
-        <GlobalStockData data={data} highClass={'h-[450px]'} type={stockType} />
+        <StockData data={data} highClass={'h-[450px]'} type={stockType} />
       )}
     </Modal>
   )
