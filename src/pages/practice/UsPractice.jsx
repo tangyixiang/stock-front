@@ -12,13 +12,50 @@ import {
   message,
   Card,
   Form,
+  Select,
 } from 'antd'
 import axios from 'axios'
 import StockData from '../../components/StockData'
 import UpdateStockData from '../../components/UpdateStockData'
 
-function QQQPractice() {
+const options = [
+  {
+    value: 'QQQ',
+    label: 'QQQ',
+  },
+  {
+    value: 'AAPL',
+    label: 'AAPL',
+  },
+  {
+    value: 'MSFT',
+    label: 'MSFT',
+  },
+  {
+    value: 'GOOG',
+    label: 'GOOG',
+  },
+  {
+    value: 'AMZN',
+    label: 'AMZN',
+  },
+  {
+    value: 'TSLA',
+    label: 'TSLA',
+  },
+  {
+    value: 'NVDA',
+    label: 'NVDA',
+  },
+  {
+    value: 'META',
+    label: 'META',
+  },
+]
+
+function UsPractice() {
   const [date, setDate] = useState()
+  const [symbol, setSymbol] = useState()
   const [practiceDay, setPracticeDay] = useState()
   const [dailyData, setDailyData] = useState([])
   const [practiceDayData, setPracticeDayData] = useState([])
@@ -61,49 +98,43 @@ function QQQPractice() {
     },
   ]
 
-  const selectDate = (date, dateStr) => {
-    setDate(dateStr)
-    setDailyData([])
-  }
-
   const refreseDayData = (dateStr) => {
     axios
-      .get('/api/practice/qqq', { params: { date: dateStr } })
+      .get('/api/practice/us', { params: { symbol: symbol, date: dateStr } })
       .then((res) => {
         setDailyData(res.data)
       })
   }
 
-  const getDayData = () => {
-    axios.get('/api/practice/qqq', { params: { date: date } }).then((res) => {
-      setDailyData(res.data)
-      initTradingDate(date)
-    })
-  }
-
   // 初始化练习日期的数据
-  const initTradingDate = (dateStr) => {
+  const initTradingDate = (formData) => {
     axios
-      .get('/api/practice/qqq/trade/day', { params: { date: dateStr } })
+      .get('/api/practice/us/trade/day', {
+        params: formData,
+      })
       .then((res) => {
         setPracticeDay(res.data[0])
         setPracticeDayDataArray(res.data)
-        getTimeSharingData(dateStr, '3m').then((data) => {
-          const lastDayData = data
-          setStartIndex(data.length)
-          setTempData(lastDayData)
-          getTimeSharingData(res.data[0], '3m').then((data2) => {
-            const mergedArray = lastDayData.concat(data2)
-            setPracticeDayData(mergedArray)
-          })
-        })
+        getTimeSharingData(formData.symbol, formData.date, '3m').then(
+          (data) => {
+            const lastDayData = data
+            setStartIndex(data.length)
+            setTempData(lastDayData)
+            getTimeSharingData(formData.symbol, res.data[0], '3m').then(
+              (data2) => {
+                const mergedArray = lastDayData.concat(data2)
+                setPracticeDayData(mergedArray)
+              }
+            )
+          }
+        )
       })
   }
 
   // 获取不同分时的数据
-  const getTimeSharingData = async (dateStr, period) => {
-    const periodDataResult = await axios.get(`/api/practice/qqq/${period}`, {
-      params: { date: dateStr },
+  const getTimeSharingData = async (symbol, dateStr, period) => {
+    const periodDataResult = await axios.get(`/api/practice/us/${period}`, {
+      params: { symbol: symbol, date: dateStr },
     })
     return periodDataResult.data
   }
@@ -112,7 +143,7 @@ function QQQPractice() {
     if (!dateStr) return
     setLoading(true)
     axios
-      .get('/api/practice/qqq/3m', { params: { date: dateStr } })
+      .get('/api/practice/us/3m', { params: { symbol: symbol, date: dateStr } })
       .then((res) => {
         setPracticeDayData(practiceDayData.concat(res.data))
         setLoading(false)
@@ -121,6 +152,17 @@ function QQQPractice() {
         setLoading(false)
         message.error('暂无数据')
       })
+  }
+
+  const finish = (formData) => {
+    const values = { ...formData, date: formData['date'].format('YYYY-MM-DD') }
+    setSymbol(values.symbol)
+    setDate(values.date)
+    axios.get('/api/practice/us', { params: values }).then((res) => {
+      //日线数据
+      setDailyData(res.data)
+      initTradingDate(values)
+    })
   }
 
   const reset = () => {
@@ -175,12 +217,20 @@ function QQQPractice() {
 
   return (
     <Wrapper nobg>
-      <Form layout="inline">
-        <Form.Item label="日期:">
-          <DatePicker onChange={selectDate} format={'YYYY-MM-DD'} />
+      <Form layout="inline" onFinish={finish}>
+        <Form.Item label="代码:" name={'symbol'}>
+          <Select
+            style={{
+              width: 120,
+            }}
+            options={options}
+          />
+        </Form.Item>
+        <Form.Item label="日期:" name={'date'}>
+          <DatePicker format={'YYYY-MM-DD'} />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" onClick={() => getDayData()}>
+          <Button type="primary" htmlType="submit">
             查询历史数据
           </Button>
         </Form.Item>
@@ -228,4 +278,4 @@ function QQQPractice() {
   )
 }
 
-export default QQQPractice
+export default UsPractice

@@ -11,7 +11,7 @@ import USCompany from './pages/us/USCompany'
 import USSymbolAnalysis from './pages/us/USSymbolAnalysis'
 import USHome from './pages/us/USHome'
 import USQQQ from './pages/us/USQQQ'
-import QQQPractice from './pages/practice/QQQPractice'
+import UsPractice from './pages/practice/UsPractice'
 import SymbolDailyPractice from './pages/practice/SymbolDailyPractice'
 import UsVolAnalysis from './pages/us/UsVolAnalysis'
 import Choose from './pages/Choose'
@@ -36,7 +36,7 @@ const router = createHashRouter([
       { path: '/us/symbol/analysis', element: <USSymbolAnalysis /> },
       { path: '/us/vol/analysis', element: <UsVolAnalysis /> },
       { path: '/us/analysis/qqq', element: <USQQQ /> },
-      { path: '/practice/qqq', element: <QQQPractice /> },
+      { path: '/practice/us', element: <UsPractice /> },
       { path: '/practice/daily', element: <SymbolDailyPractice /> },
     ],
   },

@@ -31,7 +31,7 @@ const items = [
     createItem('QQQ区间分析', '/us/analysis/qqq'),
   ]),
   createItem('模拟', '/practice', '', [
-    createItem('QQQ练习', '/practice/qqq'),
+    createItem('日内练习', '/practice/us'),
     createItem('日K练习', '/practice/daily'),
   ]),
 ]
