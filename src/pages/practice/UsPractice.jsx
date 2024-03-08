@@ -23,34 +23,34 @@ const options = [
     value: 'QQQ',
     label: 'QQQ',
   },
-  {
-    value: 'AAPL',
-    label: 'AAPL',
-  },
-  {
-    value: 'MSFT',
-    label: 'MSFT',
-  },
-  {
-    value: 'GOOG',
-    label: 'GOOG',
-  },
-  {
-    value: 'AMZN',
-    label: 'AMZN',
-  },
-  {
-    value: 'TSLA',
-    label: 'TSLA',
-  },
-  {
-    value: 'NVDA',
-    label: 'NVDA',
-  },
-  {
-    value: 'META',
-    label: 'META',
-  },
+//   {
+//     value: 'AAPL',
+//     label: 'AAPL',
+//   },
+//   {
+//     value: 'MSFT',
+//     label: 'MSFT',
+//   },
+//   {
+//     value: 'GOOG',
+//     label: 'GOOG',
+//   },
+//   {
+//     value: 'AMZN',
+//     label: 'AMZN',
+//   },
+//   {
+//     value: 'TSLA',
+//     label: 'TSLA',
+//   },
+//   {
+//     value: 'NVDA',
+//     label: 'NVDA',
+//   },
+//   {
+//     value: 'META',
+//     label: 'META',
+//   },
 ]
 
 function UsPractice() {
