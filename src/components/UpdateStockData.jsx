@@ -89,9 +89,13 @@ const UpdateStockData = (props) => {
   const id = useId()
 
   useEffect(() => {
-    props.data.forEach((item) => {
-      item.volume = item.vol
+    const updatedData = props.data.map((item) => {
+      return {
+        ...item,
+        volume: item.vol,
+      }
     })
+
     chart.current = init(id, {
       locale: 'zh-CN',
       timezone: 'America/New_York',
@@ -101,17 +105,21 @@ const UpdateStockData = (props) => {
     chart.current?.createIndicator({ name: 'EMA', calcParams: [20] }, false, {
       id: 'candle_pane',
     })
-    chart.current?.applyNewData(props.data)
+    chart.current?.applyNewData(updatedData)
     return () => {
       dispose(id)
     }
   }, [])
 
   useEffect(() => {
-    props.data.forEach((item) => {
-      item.volume = item.vol
+    console.log(props.data)
+    const updatedData = props.data.map((item) => {
+      return {
+        ...item,
+        volume: item.vol,
+      }
     })
-    chart.current?.applyNewData(props.data)
+    chart.current?.applyNewData(updatedData)
   }, [props.data])
 
   useEffect(() => {

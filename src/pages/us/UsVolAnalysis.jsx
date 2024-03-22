@@ -134,7 +134,7 @@ const UsVolAnalysis = () => {
                   </Space>
                 }
               >
-                <StockData data={item.usData} />
+                <StockData data={item.data} />
               </Card>
             </Col>
           ))}

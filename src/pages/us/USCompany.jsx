@@ -120,7 +120,7 @@ const USCompany = () => {
                 <Col span={12} offset={2}>
                   {pageSymbolData && (
                     <GlobalStockData
-                      data={pageSymbolData.get(item.symbol)}
+                      data={pageSymbolData.get(item.symbol) || []}
                       highClass={'h-[300px]'}
                     />
                   )}

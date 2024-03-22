@@ -28,9 +28,11 @@ const items = [
     createItem('公司列表', '/us/symbol/list'),
     createItem('公司分析', '/us/symbol/analysis'),
     createItem('量价分析', '/us/vol/analysis'),
-    createItem('QQQ区间分析', '/us/analysis/qqq'),
+    createItem('QQQ日历', '/us/analysis/qqq'),
+    createItem('QQQ开盘区间', '/us/analysis/qqq/period'),
   ]),
   createItem('模拟', '/practice', '', [
+    // createItem('日内练习', '/practice/us'),
     createItem('日内练习', '/practice/us'),
     createItem('日K练习', '/practice/daily'),
   ]),

@@ -15,6 +15,8 @@ import UsPractice from './pages/practice/UsPractice'
 import SymbolDailyPractice from './pages/practice/SymbolDailyPractice'
 import UsVolAnalysis from './pages/us/UsVolAnalysis'
 import Choose from './pages/Choose'
+import USQQQPeriod from './pages/us/USQQQPeriod'
+import UsMinutePractice from './pages/practice/UsMinutePractice'
 
 // 路由
 const router = createHashRouter([
@@ -36,7 +38,9 @@ const router = createHashRouter([
       { path: '/us/symbol/analysis', element: <USSymbolAnalysis /> },
       { path: '/us/vol/analysis', element: <UsVolAnalysis /> },
       { path: '/us/analysis/qqq', element: <USQQQ /> },
-      { path: '/practice/us', element: <UsPractice /> },
+      { path: '/us/analysis/qqq/period', element: <USQQQPeriod /> },
+      //   { path: '/practice/us', element: <UsPractice /> },
+      { path: '/practice/us', element: <UsMinutePractice /> },
       { path: '/practice/daily', element: <SymbolDailyPractice /> },
     ],
   },
