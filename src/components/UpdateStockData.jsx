@@ -112,7 +112,6 @@ const UpdateStockData = (props) => {
   }, [])
 
   useEffect(() => {
-    console.log(props.data)
     const updatedData = props.data.map((item) => {
       return {
         ...item,

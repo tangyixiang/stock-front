@@ -48,10 +48,6 @@ const GainsTable = (props) => {
     setshowInfo({ ...showInfo, open: false })
   }
 
-  useEffect(() => {
-    console.log(props.data)
-  }, [props])
-
   return (
     <>
       <Table

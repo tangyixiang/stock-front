@@ -17,7 +17,6 @@ import {
   Input,
 } from 'antd'
 import axios from 'axios'
-import StockData from '../../components/StockData'
 import UpdateStockData from '../../components/UpdateStockData'
 
 const options = [
@@ -36,8 +35,12 @@ const UsMinutePractice = () => {
     nextDateBarData: undefined,
   })
   const [specifyDateData, setSpecifyDateData] = useState([])
+  const [stockData, setStockData] = useState([])
   // 默认下标
   const [startIndex, setstartIndex] = useState(0)
+  const [oneMIndex, setOneMIndex] = useState(0)
+
+  const [oneMData, setOneMData] = useState([])
 
   const finish = (formData) => {
     const data = { ...formData, date: formData['date'].format('YYYY-MM-DD') }
@@ -61,16 +64,79 @@ const UsMinutePractice = () => {
         })
         // console.log(res.data)
         setSpecifyDateData(res.data)
+        setStockData(res.data)
       })
     axios
-      .get('/api/practice/us/multi/minute/data', {
-        params: data,
+      .get('/api/practice/us/getMinuteData', {
+        params: { ...data, interval: '1m' },
       })
       .then((res) => {
         setPracticeData((draft) => {
           draft.nextDateBarData = res.data
         })
       })
+  }
+
+  function handleKeyDown(event) {
+    let tempData
+    if (event.keyCode === 37) {
+      tempData = practiceData.nextDateBarData.slice(0, startIndex)
+      setstartIndex(startIndex - 1)
+    } else if (event.keyCode === 39) {
+      // 右箭头键
+      tempData = practiceData.nextDateBarData.slice(0, startIndex + 1)
+      setstartIndex(startIndex + 1)
+    }
+    const tempDataGroup = chunkArray(tempData, 5)
+    const fiveTempData = tempDataGroup.map((item) => generateNewObject(item))
+    console.log(fiveTempData)
+    const stockData = specifyDateData.concat(fiveTempData)
+    setStockData(stockData)
+  }
+
+  function chunkArray(arr, chunkSize) {
+    return arr.reduce((result, item, index) => {
+      const chunkIndex = Math.floor(index / chunkSize)
+      if (!result[chunkIndex]) {
+        result[chunkIndex] = [] // 初始化当前分组
+      }
+      result[chunkIndex].push(item) // 将元素加入当前分组
+      return result
+    }, [])
+  }
+
+  function generateNewObject(chunk) {
+    const symbol = chunk[0].symbol
+    const date = chunk[0].date
+    const open = chunk[0].open
+    const close = chunk[chunk.length - 1].close
+
+    const diffPer = Number((((close - open) / open) * 100).toFixed(2))
+
+    let high = 0
+    let low = 100000
+    let vol = 0
+    let timestamp = chunk[chunk.length - 1].timestamp
+    let time = chunk[chunk.length - 1].time
+
+    chunk.forEach((item) => {
+      high = Math.max(high, item.high)
+      low = Math.min(low, item.low)
+      vol += item.vol
+    })
+
+    return {
+      symbol,
+      date,
+      diffPer,
+      open,
+      high,
+      low,
+      close,
+      vol,
+      time,
+      timestamp,
+    }
   }
 
   return (
@@ -97,8 +163,8 @@ const UsMinutePractice = () => {
         </Button>
       </Form>
       {specifyDateData.length > 0 && (
-        <Card>
-          <UpdateStockData data={specifyDateData} highClass={'h-[550px]'} />
+        <Card onKeyDown={handleKeyDown}>
+          <UpdateStockData data={stockData} highClass={'h-[550px]'} />
         </Card>
       )}
 
