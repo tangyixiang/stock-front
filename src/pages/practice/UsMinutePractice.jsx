@@ -1,21 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import Wrapper from '../../components/Wrapper'
-import {
-  DatePicker,
-  Button,
-  Space,
-  Row,
-  Divider,
-  Col,
-  Table,
-  Spin,
-  message,
-  Card,
-  Form,
-  Select,
-  Input,
-} from 'antd'
+import { DatePicker, Button, Space, Card, Form, Select, message } from 'antd'
 import axios from 'axios'
 import UpdateStockData from '../../components/UpdateStockData'
 
@@ -27,71 +13,111 @@ const options = [
 ]
 
 const UsMinutePractice = () => {
+  const stockRef = useRef(null)
+
   const [practiceData, setPracticeData] = useImmer({
     date: undefined,
     symbol: undefined,
-    nextTradeDate: undefined,
+    nextTradeDate: [],
     currentDateBarData: [],
-    nextDateBarData: undefined,
+    nextDateBarData: [],
   })
   const [specifyDateData, setSpecifyDateData] = useState([])
   const [stockData, setStockData] = useState([])
   // 默认下标
   const [startIndex, setstartIndex] = useState(0)
-  const [oneMIndex, setOneMIndex] = useState(0)
-
-  const [oneMData, setOneMData] = useState([])
+  const [intervalId, setIntervalId] = useState(0)
 
   const finish = (formData) => {
+    console.log(formData)
     const data = { ...formData, date: formData['date'].format('YYYY-MM-DD') }
     setPracticeData((draft) => {
       draft.symbol = data.symbol
       draft.date = data.date
     })
 
-    axios.get('/api/practice/us/trade/day', { params: data }).then((res) => {
+    axios.get('/api/practice/us/trade/day', { params: data }).then((res1) => {
       setPracticeData((draft) => {
-        draft.nextTradeDate = res.data
+        draft.nextTradeDate = res1.data
       })
+      axios
+        .get('/api/practice/us/fiveDay/getMinuteData', {
+          params: { ...data, interval: '5m' },
+        })
+        .then((res2) => {
+          setPracticeData((draft) => {
+            draft.currentDateBarData = res2.data
+          })
+          // console.log(res.data)
+          setSpecifyDateData(res2.data)
+          setStockData(res2.data)
+        })
+      axios
+        .get('/api/practice/us/getMinuteData', {
+          params: {
+            symbol: data.symbol,
+            date: res1.data[0],
+            interval: '1m',
+          },
+        })
+        .then((res3) => {
+          setPracticeData((draft) => {
+            draft.nextDateBarData = res3.data
+          })
+        })
     })
-    axios
-      .get('/api/practice/us/getMinuteData', {
-        params: { ...data, interval: '5m' },
-      })
-      .then((res) => {
-        setPracticeData((draft) => {
-          draft.currentDateBarData = res.data
-        })
-        // console.log(res.data)
-        setSpecifyDateData(res.data)
-        setStockData(res.data)
-      })
-    axios
-      .get('/api/practice/us/getMinuteData', {
-        params: { ...data, interval: '1m' },
-      })
-      .then((res) => {
-        setPracticeData((draft) => {
-          draft.nextDateBarData = res.data
-        })
-      })
   }
 
-  function handleKeyDown(event) {
-    let tempData
-    if (event.keyCode === 37) {
-      tempData = practiceData.nextDateBarData.slice(0, startIndex)
-      setstartIndex(startIndex - 1)
-    } else if (event.keyCode === 39) {
-      // 右箭头键
-      tempData = practiceData.nextDateBarData.slice(0, startIndex + 1)
-      setstartIndex(startIndex + 1)
+  useEffect(() => {
+    console.log('update')
+    if (startIndex > practiceData.nextDateBarData.length) {
+      const tempLastDayBar = practiceData.nextDateBarData
+      const index = (tempLastDayBar % 390) + 1
+      if (index >= practiceData.nextTradeDate.length) {
+        message.error('最后一天数据了')
+        clearInterval(intervalId)
+        return
+      }
+      axios
+        .get('/api/practice/us/getMinuteData', {
+          params: {
+            symbol: data.symbol,
+            date: practiceData.nextTradeDate[index],
+            interval: '1m',
+          },
+        })
+        .then((res3) => {
+          setPracticeData((draft) => {
+            draft.nextDateBarData = draft.nextDateBarData.concat(res3.data)
+          })
+        })
     }
+    let tempData = practiceData.nextDateBarData.slice(0, startIndex)
     const tempDataGroup = chunkArray(tempData, 5)
     const fiveTempData = tempDataGroup.map((item) => generateNewObject(item))
-    console.log(fiveTempData)
     const stockData = specifyDateData.concat(fiveTempData)
     setStockData(stockData)
+  }, [startIndex])
+
+  function handleKeyDown(event) {
+    if (event.keyCode === 37) {
+      setstartIndex(startIndex - 1)
+    } else if (event.keyCode === 39) {
+      setstartIndex(startIndex + 1)
+    }
+  }
+
+  function runTask() {
+    const temp = setInterval(autoUpdate, 2000)
+    setIntervalId(temp)
+  }
+
+  function stopTask() {
+    clearInterval(intervalId)
+  }
+
+  function autoUpdate() {
+    setstartIndex((prevCount) => prevCount + 1)
   }
 
   function chunkArray(arr, chunkSize) {
@@ -141,7 +167,7 @@ const UsMinutePractice = () => {
 
   return (
     <Wrapper>
-      <Form layout="inline" onFinish={finish}>
+      <Form layout="inline" onFinish={finish} initialValues={{ symbol: 'QQQ' }}>
         <Form.Item label="代码:" name={'symbol'}>
           <Select
             style={{
@@ -158,25 +184,27 @@ const UsMinutePractice = () => {
             查询历史数据
           </Button>
         </Form.Item>
-        <Button type="primary" danger onClick={() => reset()}>
-          重置
-        </Button>
+        <Form.Item>
+          <Button type="primary" danger onClick={() => location.reload()}>
+            重置
+          </Button>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" onClick={runTask}>
+            开始
+          </Button>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" danger onClick={stopTask}>
+            暂停
+          </Button>
+        </Form.Item>
       </Form>
       {specifyDateData.length > 0 && (
-        <Card onKeyDown={handleKeyDown}>
+        <Card onKeyDown={handleKeyDown} ref={stockRef}>
           <UpdateStockData data={stockData} highClass={'h-[550px]'} />
         </Card>
       )}
-
-      {/* <div className="fixed bottom-0 left-0 right-0 bg-gray-100 p-4 flex justify-center items-center">
-        <Space>
-          <Button type="primary">买入</Button>
-          <Button>暂停</Button>
-          <Button type="primary" danger>
-            卖出
-          </Button>
-        </Space>
-      </div> */}
     </Wrapper>
   )
 }
