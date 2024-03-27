@@ -1,11 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import Wrapper from '../../components/Wrapper'
-import { DatePicker, Button, Drawer, Card, Form, Select, message } from 'antd'
+import {
+  DatePicker,
+  Button,
+  Drawer,
+  Card,
+  Form,
+  Select,
+  message,
+  Input,
+} from 'antd'
 import axios from 'axios'
 import UpdateStockData from '../../components/UpdateStockData'
 import StockData from '../../components/StockData'
-
 
 const options = [
   {
@@ -16,7 +24,7 @@ const options = [
 
 const UsMinutePractice = () => {
   const stockRef = useRef(null)
-
+  const [form] = Form.useForm()
   const [practiceData, setPracticeData] = useImmer({
     date: undefined,
     symbol: undefined,
@@ -29,6 +37,7 @@ const UsMinutePractice = () => {
   // 默认下标
   const [startIndex, setstartIndex] = useState(0)
   const [intervalId, setIntervalId] = useState(0)
+  const [speed, setSpeed] = useState(2000)
   const [dailyData, setDailyData] = useImmer({
     date: '',
     data: [],
@@ -51,7 +60,6 @@ const UsMinutePractice = () => {
         params: { symbol: formData.symbol, date: dateStr },
       })
       .then((res) => {
-        console.log(res.data);
         setDailyData((draft) => {
           draft.data = res.data
         })
@@ -92,17 +100,18 @@ const UsMinutePractice = () => {
   useEffect(() => {
     console.log('update')
     if (startIndex > practiceData.nextDateBarData.length) {
+      console.log('开始获取下一天的数据')
       const tempLastDayBar = practiceData.nextDateBarData
-      const index = (tempLastDayBar % 390) + 1
+      const index = (tempLastDayBar.length % 390) + 1
       if (index >= practiceData.nextTradeDate.length) {
         message.error('最后一天数据了')
-        clearInterval(intervalId)
+        stopTask()
         return
       }
       axios
         .get('/api/practice/us/getMinuteData', {
           params: {
-            symbol: data.symbol,
+            symbol: practiceData.symbol,
             date: practiceData.nextTradeDate[index],
             interval: '1m',
           },
@@ -110,14 +119,16 @@ const UsMinutePractice = () => {
         .then((res3) => {
           setPracticeData((draft) => {
             draft.nextDateBarData = draft.nextDateBarData.concat(res3.data)
+            console.log(draft.nextDateBarData.concat(res3.data))
           })
         })
+    } else {
+      let tempData = practiceData.nextDateBarData.slice(0, startIndex)
+      const tempDataGroup = chunkArray(tempData, 5)
+      const fiveTempData = tempDataGroup.map((item) => generateNewObject(item))
+      const stockData = specifyDateData.concat(fiveTempData)
+      setStockData(stockData)
     }
-    let tempData = practiceData.nextDateBarData.slice(0, startIndex)
-    const tempDataGroup = chunkArray(tempData, 5)
-    const fiveTempData = tempDataGroup.map((item) => generateNewObject(item))
-    const stockData = specifyDateData.concat(fiveTempData)
-    setStockData(stockData)
   }, [startIndex])
 
   function handleKeyDown(event) {
@@ -135,7 +146,7 @@ const UsMinutePractice = () => {
   }
 
   function runTask() {
-    const temp = setInterval(autoUpdate, 2000)
+    const temp = setInterval(autoUpdate, speed)
     setIntervalId(temp)
   }
 
@@ -194,7 +205,12 @@ const UsMinutePractice = () => {
 
   return (
     <Wrapper>
-      <Form layout="inline" onFinish={finish} initialValues={{ symbol: 'QQQ' }}>
+      <Form
+        form={form}
+        layout="inline"
+        onFinish={finish}
+        initialValues={{ symbol: 'QQQ' }}
+      >
         <Form.Item label="代码:" name={'symbol'}>
           <Select
             style={{
@@ -205,6 +221,12 @@ const UsMinutePractice = () => {
         </Form.Item>
         <Form.Item label="日期:" name={'date'}>
           <DatePicker format={'YYYY-MM-DD'} />
+        </Form.Item>
+        <Form.Item label="运行速度" name="speed">
+          <Input
+            className="w-[100px]"
+            onChange={(e) => setSpeed(e.target.value)}
+          />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
