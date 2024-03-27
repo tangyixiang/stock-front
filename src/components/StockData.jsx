@@ -99,11 +99,13 @@ const StockData = (props) => {
   const id = useId()
 
   useEffect(() => {
-    const data = props.data
-    data.forEach((item) => {
-      item.timestamp = new Date(item.date).getTime()
-      item.volume = item.tradeVol
-      item.turnover = item.tradeQuota
+    const data = props.data.map((item) => {
+      return {
+        ...item,
+        volume: item.tradeVol,
+        turnover: item.tradeQuota,
+        timestamp: new Date(item.date).getTime(),
+      }
     })
 
     chart.current = init(id, {
@@ -133,11 +135,14 @@ const StockData = (props) => {
     } else {
       barStyle.candle.type = 'candle_up_stroke'
     }
-    const data = props.data
-    data.forEach((item) => {
-      item.timestamp = new Date(item.date).getTime()
-      item.volume = item.tradeVol
-      item.turnover = item.tradeQuota
+
+    const data = props.data.map((item) => {
+      return {
+        ...item,
+        volume: item.tradeVol,
+        turnover: item.tradeQuota,
+        timestamp: new Date(item.date).getTime(),
+      }
     })
     chart.current?.applyNewData(data)
     chart.current?.setStyles(barStyle)

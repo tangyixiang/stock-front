@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import Wrapper from '../../components/Wrapper'
-import { DatePicker, Button, Space, Card, Form, Select, message } from 'antd'
+import { DatePicker, Button, Drawer, Card, Form, Select, message } from 'antd'
 import axios from 'axios'
 import UpdateStockData from '../../components/UpdateStockData'
+import StockData from '../../components/StockData'
+
 
 const options = [
   {
@@ -27,14 +29,33 @@ const UsMinutePractice = () => {
   // 默认下标
   const [startIndex, setstartIndex] = useState(0)
   const [intervalId, setIntervalId] = useState(0)
+  const [dailyData, setDailyData] = useImmer({
+    date: '',
+    data: [],
+    show: false,
+  })
 
   const finish = (formData) => {
-    console.log(formData)
+    const dateStr = formData['date'].format('YYYY-MM-DD')
+    setDailyData((draft) => {
+      draft.date = dateStr
+    })
     const data = { ...formData, date: formData['date'].format('YYYY-MM-DD') }
     setPracticeData((draft) => {
       draft.symbol = data.symbol
       draft.date = data.date
     })
+
+    axios
+      .get('/api/practice/us', {
+        params: { symbol: formData.symbol, date: dateStr },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setDailyData((draft) => {
+          draft.data = res.data
+        })
+      })
 
     axios.get('/api/practice/us/trade/day', { params: data }).then((res1) => {
       setPracticeData((draft) => {
@@ -205,12 +226,42 @@ const UsMinutePractice = () => {
             暂停
           </Button>
         </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            className="bg-amber-500"
+            onClick={() =>
+              setDailyData((draft) => {
+                draft.show = true
+              })
+            }
+          >
+            查看日线
+          </Button>
+        </Form.Item>
       </Form>
       {specifyDateData.length > 0 && (
         <Card onKeyDown={handleKeyDown} ref={stockRef}>
           <UpdateStockData data={stockData} highClass={'h-[550px]'} />
         </Card>
       )}
+      <Drawer
+        title="日线"
+        placement={'left'}
+        width={'50%'}
+        closable={false}
+        onClose={() =>
+          setDailyData((draft) => {
+            draft.show = false
+          })
+        }
+        open={dailyData.show}
+        key={'k'}
+      >
+        {dailyData.data.length > 0 && (
+          <StockData data={dailyData.data} highClass={'h-[550px]'} />
+        )}
+      </Drawer>
     </Wrapper>
   )
 }
