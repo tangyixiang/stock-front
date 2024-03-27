@@ -102,9 +102,25 @@ const UpdateStockData = (props) => {
     })
     chart.current?.zoomAtCoordinate(6)
     chart.current?.createIndicator('VOL', true)
-    chart.current?.createIndicator({ name: 'EMA', calcParams: [20] }, false, {
-      id: 'candle_pane',
-    })
+    chart.current?.createIndicator(
+      {
+        name: 'EMA',
+        calcParams: [20],
+        styles: {
+          lines: [
+            {
+              size: 1.2,
+              style: 'solid',
+              color: '#0000FF',
+            },
+          ],
+        },
+      },
+      false,
+      {
+        id: 'candle_pane',
+      }
+    )
     chart.current?.applyNewData(updatedData)
     return () => {
       dispose(id)
