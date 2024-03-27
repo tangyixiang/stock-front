@@ -259,7 +259,7 @@ const UsMinutePractice = () => {
         key={'k'}
       >
         {dailyData.data.length > 0 && (
-          <StockData data={dailyData.data} highClass={'h-[550px]'} />
+          <StockData data={dailyData.data} highClass={'h-[750px]'} />
         )}
       </Drawer>
     </Wrapper>
