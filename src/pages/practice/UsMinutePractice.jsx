@@ -104,6 +104,12 @@ const UsMinutePractice = () => {
       setstartIndex(startIndex - 1)
     } else if (event.keyCode === 39) {
       setstartIndex(startIndex + 1)
+    } else if (event.keyCode === 32) {
+      // 空格暂停
+      stopTask()
+    } else if (event.keyCode === 13) {
+      // 回车开始
+      runTask()
     }
   }
 
