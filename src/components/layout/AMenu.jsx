@@ -34,6 +34,7 @@ const items = [
   createItem('模拟', '/practice', '', [
     // createItem('日内练习', '/practice/us'),
     createItem('日内练习', '/practice/us'),
+    createItem('日内5分钟模拟', '/practice/us/five'),
     createItem('日K练习', '/practice/daily'),
   ]),
 ]

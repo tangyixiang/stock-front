@@ -101,6 +101,8 @@ const UsMinutePractice = () => {
     console.log('update')
     if (startIndex > practiceData.nextDateBarData.length) {
       console.log('开始获取下一天的数据')
+      stopTask()
+      console.log(startIndex)
       const tempLastDayBar = practiceData.nextDateBarData
       const index = (tempLastDayBar.length % 390) + 1
       if (index >= practiceData.nextTradeDate.length) {
@@ -119,10 +121,11 @@ const UsMinutePractice = () => {
         .then((res3) => {
           setPracticeData((draft) => {
             draft.nextDateBarData = draft.nextDateBarData.concat(res3.data)
-            console.log(draft.nextDateBarData.concat(res3.data))
+            console.log('数据获取完成' + startIndex)
           })
         })
     } else {
+      console.log(startIndex)
       let tempData = practiceData.nextDateBarData.slice(0, startIndex)
       const tempDataGroup = chunkArray(tempData, 5)
       const fiveTempData = tempDataGroup.map((item) => generateNewObject(item))

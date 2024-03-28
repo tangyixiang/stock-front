@@ -39,7 +39,7 @@ const router = createHashRouter([
       { path: '/us/vol/analysis', element: <UsVolAnalysis /> },
       { path: '/us/analysis/qqq', element: <USQQQ /> },
       { path: '/us/analysis/qqq/period', element: <USQQQPeriod /> },
-      //   { path: '/practice/us', element: <UsPractice /> },
+      { path: '/practice/us/five', element: <UsPractice /> },
       { path: '/practice/us', element: <UsMinutePractice /> },
       { path: '/practice/daily', element: <SymbolDailyPractice /> },
     ],

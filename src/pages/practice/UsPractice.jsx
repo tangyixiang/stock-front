@@ -58,30 +58,26 @@ function UsPractice() {
   const [symbol, setSymbol] = useState()
   const [practiceDay, setPracticeDay] = useState()
   const [dailyData, setDailyData] = useState([])
-  // 训练日的数据
   const [practiceDayData, setPracticeDayData] = useState([])
-  const [nextDayData, setNextDayData] = useState({})
-  // 指定日期之后的所有交易日
   const [practiceDayDataArray, setPracticeDayDataArray] = useState([])
   const [nextDayIndex, setNextDayIndex] = useState(0)
-  // 指定日期的数据
-  const [specifyDateData, setSpecifyDateData] = useState([])
+  const [tempData, setTempData] = useState([])
   const [startIndex, setStartIndex] = useState(0)
   const [loading, setLoading] = useState(false)
   const [tradeLog, setTradeLog] = useState([])
   const [diffPer, setDiffPer] = useState(0)
 
   useEffect(() => {
-    if (specifyDateData.length > 0) {
+    if (tempData.length > 0) {
       const lastBarData = (
-        ((specifyDateData[specifyDateData.length - 1].close -
+        ((tempData[tempData.length - 1].close -
           dailyData[dailyData.length - 1].close) /
           dailyData[dailyData.length - 1].close) *
         100
       ).toFixed(2)
       setDiffPer(lastBarData)
     }
-  }, [specifyDateData])
+  }, [tempData])
 
   const columns = [
     {
@@ -110,43 +106,55 @@ function UsPractice() {
       })
   }
 
-  // 初始化指定日期之后的所有的交易日
+  // 初始化练习日期的数据
   const initTradingDate = (formData) => {
     axios
       .get('/api/practice/us/trade/day', {
         params: formData,
       })
       .then((res) => {
-        // 指定日期之后的第一个交易日
         setPracticeDay(res.data[0])
         setPracticeDayDataArray(res.data)
-
-        axios
-          .get(`/api/practice/us/getMinuteData`, {
-            params: {
-              symbol: formData.symbol,
-              date: formData.date,
-              interval: '5m',
-            },
-          })
-          .then((res) => {
-            // 指定日期当天的分时
-            const dateData = res.data
+        getTimeSharingData(formData.symbol, formData.date, '5m').then(
+          (data) => {
+            const lastDayData = data
             setStartIndex(data.length)
-            setSpecifyDateData(dateData)
-          })
-
-        axios
-          .get(`/api/practice/us/multi/minute/data`, {
-            params: { symbol: formData.symbol, date: res.data[0] },
-          })
-          .then((res) => {
-            setNextDayData(res.data)
-          })
+            setTempData(lastDayData)
+            getTimeSharingData(formData.symbol, res.data[0], '5m').then(
+              (data2) => {
+                const mergedArray = lastDayData.concat(data2)
+                setPracticeDayData(mergedArray)
+              }
+            )
+          }
+        )
       })
   }
 
-  
+  // 获取不同分时的数据
+  const getTimeSharingData = async (symbol, dateStr, period) => {
+    const periodDataResult = await axios.get(`/api/practice/us/getMinuteData`, {
+      params: { symbol: symbol, date: dateStr, interval: period },
+    })
+    return periodDataResult.data
+  }
+
+  const loadingNextDayData = (dateStr) => {
+    if (!dateStr) return
+    setLoading(true)
+    axios
+      .get('/api/practice/us/getMinuteData', {
+        params: { symbol: symbol, date: dateStr, interval: '5m' },
+      })
+      .then((res) => {
+        setPracticeDayData(practiceDayData.concat(res.data))
+        setLoading(false)
+      })
+      .catch((e) => {
+        setLoading(false)
+        message.error('暂无数据')
+      })
+  }
 
   const finish = (formData) => {
     const values = { ...formData, date: formData['date'].format('YYYY-MM-DD') }
@@ -165,23 +173,40 @@ function UsPractice() {
     setDailyData([])
     setPracticeDayData([])
     setStartIndex(0)
-    setSpecifyDateData([])
+    setTempData([])
   }
 
   function handleKeyDown(event) {
     if (loading) {
       return
     }
-    console.log(specifyDateData[specifyDateData.length - 1])
+    console.log(tempData[tempData.length - 1])
     if (event.keyCode === 37) {
-     
+      // 左箭头键
+      if (startIndex > 0) {
+        const tempIndex = startIndex - 1
+        setStartIndex(tempIndex)
+        setTempData(practiceDayData.slice(0, tempIndex))
+      }
     } else if (event.keyCode === 39) {
-     
+      // 右箭头键
+      const tempIndex = startIndex + 1
+      if (tempIndex <= practiceDayData.length) {
+        setStartIndex(tempIndex)
+        setTempData(practiceDayData.slice(0, tempIndex))
+      } else {
+        message.info('请等待2s')
+        setNextDayIndex(nextDayIndex + 1)
+        setDate(practiceDayDataArray[nextDayIndex])
+        refreseDayData(practiceDayDataArray[nextDayIndex])
+        setPracticeDay(practiceDayDataArray[nextDayIndex + 1])
+        loadingNextDayData(practiceDayDataArray[nextDayIndex + 1])
+      }
     }
   }
 
   const tradeBar = (type) => {
-    const data = specifyDateData[specifyDateData.length - 1]
+    const data = tempData[tempData.length - 1]
     const logData = {
       datetime: data.date + ' ' + data.time,
       price: data.close,
@@ -244,7 +269,7 @@ function UsPractice() {
               }
             >
               {loading && <Spin />}
-              <UpdateStockData data={specifyDateData} highClass={'h-[550px]'} />
+              <UpdateStockData data={tempData} highClass={'h-[550px]'} />
             </Card>
           </Col>
           {/* <Col span={5} className="ml-6">

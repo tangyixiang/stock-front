@@ -123,6 +123,25 @@ const StockData = (props) => {
     })
     // paneId.current = chart.current?.createIndicator('VOL', true)
     chart.current?.createIndicator('VOL', true)
+    chart.current?.createIndicator(
+      {
+        name: 'EMA',
+        calcParams: [20],
+        styles: {
+          lines: [
+            {
+              size: 1.2,
+              style: 'solid',
+              color: '#0000FF',
+            },
+          ],
+        },
+      },
+      false,
+      {
+        id: 'candle_pane',
+      }
+    )
     chart.current?.applyNewData(data)
     return () => {
       dispose(id)
