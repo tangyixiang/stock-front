@@ -6,22 +6,19 @@ import {
   Col,
   Tag,
   Space,
-  Input,
   Button,
   Divider,
   Modal,
-  Image,
-  Form,
-  message,
+  DatePicker,
 } from 'antd'
 import Wrapper from '../../components/Wrapper'
+import UsMinutePractice from '../practice/UsMinutePractice'
 
 const USQQQ = () => {
   const [data, setData] = useState([])
   const [param, setParam] = useState([])
   const [modal, setModal] = useState(false)
   const [detail, setDetail] = useState({})
-  const [form] = Form.useForm()
 
   const getData = () => {
     axios
@@ -37,20 +34,16 @@ const USQQQ = () => {
       .then((res) => {
         setModal(true)
         setDetail(res.data)
-        form.setFieldsValue(res.data)
       })
-  }
-
-  const onFinish = (value) => {
-    axios
-      .post('/api/us/analysis/qqq/update', value)
-      .then((res) => message.success('成功'))
   }
 
   return (
     <Wrapper nobg>
       <Space direction="horizontal">
-        <Input placeholder="月份" onChange={(e) => setParam(e.target.value)} />
+        <DatePicker
+          onChange={(date, dateString) => setParam(dateString.replace('-', ''))}
+          picker="month"
+        />
         <Button onClick={getData}>查询</Button>
       </Space>
       <Divider />
@@ -107,91 +100,13 @@ const USQQQ = () => {
       </Row>
       <Modal
         title={detail.date}
+        destroyOnClose
         open={modal}
         onCancel={() => setModal(false)}
         footer={null}
         width="90%"
       >
-        <Row className="p-1">
-          <Col span={18}>
-            <Image src={detail.imagesUrl} preview={false} />
-          </Col>
-          <Col span={6} className="px-4">
-            <Form form={form} onFinish={onFinish}>
-              <Form.Item
-                name="id"
-                label="id"
-                labelCol={{ span: 5 }}
-                hidden={true}
-              >
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item
-                name="symbol"
-                label="symbol"
-                labelCol={{ span: 5 }}
-                hidden={true}
-              >
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item name="date" label="日期" labelCol={{ span: 5 }}>
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item name="openDesc" label="开盘" labelCol={{ span: 5 }}>
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item
-                name="openRate"
-                label="开盘百分比"
-                labelCol={{ span: 5 }}
-              >
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item name="period" label="区间" labelCol={{ span: 5 }}>
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item name="trend" label="趋势" labelCol={{ span: 5 }}>
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item
-                name="sharpShock"
-                label="震荡幅度"
-                labelCol={{ span: 5 }}
-              >
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item
-                name="open5min"
-                label="前五分钟"
-                labelCol={{ span: 5 }}
-              >
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item
-                name="highTime"
-                label="最高时间点"
-                labelCol={{ span: 5 }}
-              >
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item
-                name="lowTime"
-                label="最低时间点"
-                labelCol={{ span: 5 }}
-              >
-                <Input autoComplete="off" />
-              </Form.Item>
-              <Form.Item name="description" label="描述" labelCol={{ span: 5 }}>
-                <Input.TextArea autoComplete="off" />
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  提交
-                </Button>
-              </Form.Item>
-            </Form>
-          </Col>
-        </Row>
+        <UsMinutePractice date={detail.date} />
       </Modal>
     </Wrapper>
   )

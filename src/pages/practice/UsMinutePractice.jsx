@@ -14,6 +14,7 @@ import {
 import axios from 'axios'
 import UpdateStockData from '../../components/UpdateStockData'
 import StockData from '../../components/StockData'
+import moment from 'moment'
 
 const options = [
   {
@@ -22,7 +23,7 @@ const options = [
   },
 ]
 
-const UsMinutePractice = () => {
+const UsMinutePractice = (props) => {
   const stockRef = useRef(null)
   const [form] = Form.useForm()
   const [practiceData, setPracticeData] = useImmer({
@@ -43,6 +44,11 @@ const UsMinutePractice = () => {
     data: [],
     show: false,
   })
+
+  if (props) {
+    form.setFieldsValue({ date: moment(props.date) })
+    finish(form.getFieldsValue())
+  }
 
   const finish = (formData) => {
     const dateStr = formData['date'].format('YYYY-MM-DD')
@@ -97,6 +103,23 @@ const UsMinutePractice = () => {
     })
   }
 
+  const getNextDayData = async () => {
+    const res = await axios.get('/api/practice/us/getMinuteData', {
+      params: {
+        symbol: practiceData.symbol,
+        date: practiceData.nextTradeDate[index],
+        interval: '1m',
+      },
+    })
+    setPracticeData((draft) => {
+      draft.nextDateBarData = draft.nextDateBarData.concat(res.data)
+      console.log('数据获取完成' + startIndex)
+    })
+    setTimeout(function () {
+      runTask()
+    }, 2000)
+  }
+
   useEffect(() => {
     console.log('update')
     if (startIndex > practiceData.nextDateBarData.length) {
@@ -107,23 +130,9 @@ const UsMinutePractice = () => {
       const index = (tempLastDayBar.length % 390) + 1
       if (index >= practiceData.nextTradeDate.length) {
         message.error('最后一天数据了')
-        stopTask()
         return
       }
-      axios
-        .get('/api/practice/us/getMinuteData', {
-          params: {
-            symbol: practiceData.symbol,
-            date: practiceData.nextTradeDate[index],
-            interval: '1m',
-          },
-        })
-        .then((res3) => {
-          setPracticeData((draft) => {
-            draft.nextDateBarData = draft.nextDateBarData.concat(res3.data)
-            console.log('数据获取完成' + startIndex)
-          })
-        })
+      getNextDayData()
     } else {
       console.log(startIndex)
       let tempData = practiceData.nextDateBarData.slice(0, startIndex)
