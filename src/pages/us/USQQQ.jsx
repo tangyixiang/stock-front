@@ -13,6 +13,7 @@ import {
 } from 'antd'
 import Wrapper from '../../components/Wrapper'
 import UsMinutePractice from '../practice/UsMinutePractice'
+import OneDayMinutePractice from '../practice/OneDayMinutePractice'
 
 const USQQQ = () => {
   const [data, setData] = useState([])
@@ -106,7 +107,7 @@ const USQQQ = () => {
         footer={null}
         width="90%"
       >
-        <UsMinutePractice date={detail.date} />
+        <OneDayMinutePractice date={detail.date} />
       </Modal>
     </Wrapper>
   )
