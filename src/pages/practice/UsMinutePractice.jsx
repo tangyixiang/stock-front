@@ -23,7 +23,7 @@ const options = [
   },
 ]
 
-const UsMinutePractice = (props) => {
+const UsMinutePractice = () => {
   const stockRef = useRef(null)
   const [form] = Form.useForm()
   const [practiceData, setPracticeData] = useImmer({
@@ -44,11 +44,6 @@ const UsMinutePractice = (props) => {
     data: [],
     show: false,
   })
-
-  if (props) {
-    form.setFieldsValue({ date: moment(props.date) })
-    finish(form.getFieldsValue())
-  }
 
   const finish = (formData) => {
     const dateStr = formData['date'].format('YYYY-MM-DD')
@@ -104,6 +99,7 @@ const UsMinutePractice = (props) => {
   }
 
   const getNextDayData = async () => {
+    const index = parseInt(startIndex / 390)
     const res = await axios.get('/api/practice/us/getMinuteData', {
       params: {
         symbol: practiceData.symbol,
@@ -114,6 +110,7 @@ const UsMinutePractice = (props) => {
     setPracticeData((draft) => {
       draft.nextDateBarData = draft.nextDateBarData.concat(res.data)
       console.log('数据获取完成' + startIndex)
+      setstartIndex((prevCount) => prevCount - 1)
     })
     setTimeout(function () {
       runTask()
@@ -123,7 +120,7 @@ const UsMinutePractice = (props) => {
   useEffect(() => {
     console.log('update')
     if (startIndex > practiceData.nextDateBarData.length) {
-      console.log('开始获取下一天的数据')
+      message.info('开始获取下一天的数据')
       stopTask()
       console.log(startIndex)
       const tempLastDayBar = practiceData.nextDateBarData
