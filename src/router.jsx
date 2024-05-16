@@ -17,6 +17,7 @@ import UsVolAnalysis from './pages/us/UsVolAnalysis'
 import Choose from './pages/Choose'
 import USQQQPeriod from './pages/us/USQQQPeriod'
 import UsMinutePractice from './pages/practice/UsMinutePractice'
+import USAnalysisTable from './pages/us/USAnalysisTable'
 
 // 路由
 const router = createHashRouter([
@@ -42,6 +43,7 @@ const router = createHashRouter([
       { path: '/practice/us/five', element: <UsPractice /> },
       { path: '/practice/us', element: <UsMinutePractice /> },
       { path: '/practice/daily', element: <SymbolDailyPractice /> },
+      { path: '/us/analysis/data', element: <USAnalysisTable /> },
     ],
   },
 ])

@@ -30,6 +30,7 @@ const items = [
     createItem('量价分析', '/us/vol/analysis'),
     createItem('QQQ日历', '/us/analysis/qqq'),
     createItem('QQQ开盘区间', '/us/analysis/qqq/period'),
+    createItem('QQQ分析', '/us/analysis/data'),
   ]),
   createItem('模拟', '/practice', '', [
     // createItem('日内练习', '/practice/us'),

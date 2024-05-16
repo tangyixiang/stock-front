@@ -15,7 +15,6 @@ const UpAndDownRank = (props) => {
     giansList()
   }, [conditionData])
 
-
   const changeUpState = (v) => {
     if (v == '涨') {
       setConditionData({ ...conditionData, gainsType: '1' })
@@ -35,6 +34,9 @@ const UpAndDownRank = (props) => {
   const gainCalculate = (v) => {
     let type = 'd'
     let period = 5
+    if (v == '3日') {
+      period = 3
+    }
     if (v == '5日') {
       period = 5
     }
@@ -69,8 +71,8 @@ const UpAndDownRank = (props) => {
             onChange={(v) => changeUpState(v)}
           />
           <Segmented
-            defaultValue="5日"
-            options={['5日', '10日', '30日', '3个月', '6个月', '今年']}
+            defaultValue="3日"
+            options={['3日', '5日', '10日', '30日', '3个月', '6个月', '今年']}
             onChange={(v) => gainCalculate(v)}
           />
         </Space>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Tag } from 'antd'
+import { Table, Tag, Card } from 'antd'
 import SymbolCard from './SymbolCard'
 
 const columns = [
@@ -42,10 +42,33 @@ const columns = [
 ]
 
 const GainsTable = (props) => {
-  const [showInfo, setshowInfo] = useState({ symbol: '', open: false })
+  const [showInfo, setshowInfo] = useState({
+    symbol: '',
+    open: false,
+  })
+  const [nextIndex, setNextIndex] = useState(0)
 
   const close = () => {
     setshowInfo({ ...showInfo, open: false })
+  }
+
+  const handleKeyDown = (event) => {
+    setNextIndex((prevData) => {
+      let tempIndex
+      if (event.keyCode === 37) {
+        tempIndex = prevData - 1
+      } else if (event.keyCode === 39) {
+        tempIndex = prevData + 1
+      }
+      console.log(tempIndex)
+      console.log(props.data[tempIndex])
+
+      setshowInfo({
+        symbol: props.data[tempIndex].symbol,
+        open: true,
+      })
+      return tempIndex
+    })
   }
 
   return (
@@ -54,9 +77,10 @@ const GainsTable = (props) => {
         rowKey={'symbol'}
         dataSource={props.data}
         columns={columns}
-        onRow={(record) => {
+        onRow={(record, index) => {
           return {
             onClick: (event) => {
+              setNextIndex(index)
               setshowInfo({ symbol: record.symbol, open: true })
             },
           }
@@ -64,11 +88,13 @@ const GainsTable = (props) => {
         pagination={{ showQuickJumper: true }}
       />
       {showInfo.symbol && (
-        <SymbolCard
-          symbol={showInfo.symbol}
-          open={showInfo.open}
-          close={close}
-        />
+        <Card onKeyDown={handleKeyDown}>
+          <SymbolCard
+            symbol={showInfo.symbol}
+            open={showInfo.open}
+            close={close}
+          />
+        </Card>
       )}
     </>
   )
