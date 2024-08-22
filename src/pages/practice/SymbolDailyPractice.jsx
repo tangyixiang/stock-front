@@ -10,6 +10,7 @@ import {
   Form,
   Divider,
   Select,
+  DatePicker,
 } from 'antd'
 import axios from 'axios'
 import StockData from '../../components/StockData'
@@ -20,14 +21,17 @@ function SymbolDailyPractice() {
   const [dailyData, setDailyData] = useState([])
 
   const getDayData = (values) => {
+    const chooseDate = values.date.format('YYYY-MM-DD')
     axios
       .get(`/api/${values.type}/symbol/history/data`, {
         params: { symbol: values.symbol, period: 3000 },
       })
       .then((res) => {
         setDailyData(res.data)
-        setStartIndex(values.index)
-        setTempData(res.data.slice(0, values.index))
+        const index = res.data.findIndex((obj) => obj.date === chooseDate)
+        console.log(index)
+        setStartIndex(index)
+        setTempData(res.data.slice(0, index))
       })
   }
 
@@ -64,6 +68,9 @@ function SymbolDailyPractice() {
         </Form.Item>
         <Form.Item name="symbol" label="代码">
           <Input autoComplete="off" />
+        </Form.Item>
+        <Form.Item name="date" label="日期">
+          <DatePicker format={'YYYY-MM-DD'} />
         </Form.Item>
         <Form.Item name="index" label="开始序号">
           <InputNumber

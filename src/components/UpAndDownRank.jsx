@@ -34,6 +34,9 @@ const UpAndDownRank = (props) => {
   const gainCalculate = (v) => {
     let type = 'd'
     let period = 5
+    if (v == '1日') {
+      period = 1
+    }
     if (v == '3日') {
       period = 3
     }
@@ -72,7 +75,16 @@ const UpAndDownRank = (props) => {
           />
           <Segmented
             defaultValue="3日"
-            options={['3日', '5日', '10日', '30日', '3个月', '6个月', '今年']}
+            options={[
+              '1日',
+              '3日',
+              '5日',
+              '10日',
+              '30日',
+              '3个月',
+              '6个月',
+              '今年',
+            ]}
             onChange={(v) => gainCalculate(v)}
           />
         </Space>

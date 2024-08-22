@@ -26,7 +26,6 @@ const items = [
   ]),
   createItem('美国', '/us', '', [
     createItem('公司列表', '/us/symbol/list'),
-    createItem('公司分析', '/us/symbol/analysis'),
     createItem('量价分析', '/us/vol/analysis'),
     createItem('QQQ日历', '/us/analysis/qqq'),
     createItem('QQQ开盘区间', '/us/analysis/qqq/period'),

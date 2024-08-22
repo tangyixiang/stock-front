@@ -34,7 +34,7 @@ const SymbolCard = (props) => {
 
     axios
       .get(`/api/${marketType}/symbol/history/data`, {
-        params: { symbol: props.symbol, period: 500 },
+        params: { symbol: props.symbol, period: 200 },
       })
       .then((res) => setData(res.data))
     return () => {

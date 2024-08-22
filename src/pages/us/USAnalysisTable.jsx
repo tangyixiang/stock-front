@@ -1,12 +1,17 @@
 import { ProTable } from '@ant-design/pro-components'
-import { Button, Drawer } from 'antd'
+import { Button, Col, Drawer, Modal, Row } from 'antd'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import UpdateStockData from '../../components/UpdateStockData'
+import StockData from '../../components/StockData'
+import StockDataAnalysis from '../../components/StockDataAnalysis'
 
 const USAnalysisTable = () => {
   const [open, setOpen] = useState(false)
   const [minuteData, setMinuteData] = useState()
+  const [openAll, setOpenAll] = useState(false)
+  const [allDate, setAllDate] = useState([])
+  const [allDateData, setAllDateData] = useState({})
 
   const columns = [
     {
@@ -20,8 +25,18 @@ const USAnalysisTable = () => {
       width: 100,
     },
     {
+      title: '趋势',
+      dataIndex: 'trend',
+      width: 100,
+    },
+    {
       title: '区间',
       dataIndex: 'period',
+      width: 100,
+    },
+    {
+      title: '涨跌幅',
+      dataIndex: 'diffPer',
       width: 100,
     },
     {
@@ -39,6 +54,7 @@ const USAnalysisTable = () => {
       dataIndex: 'lowTime',
       width: 100,
     },
+
     {
       title: '操作',
       width: 100,
@@ -59,6 +75,16 @@ const USAnalysisTable = () => {
     },
   ]
 
+  const showChart = () => {
+    setOpenAll(true)
+    axios
+      .post('/api/us/analysis/qqq/lotOfDay', { days: allDate })
+      .then((res) => setAllDateData(res.data))
+  }
+  const closeChart = () => {
+    setOpenAll(false)
+    setAllDateData([])
+  }
   const onClose = () => {
     setOpen(false)
     setMinuteData(undefined)
@@ -70,7 +96,9 @@ const USAnalysisTable = () => {
       .get(`/api/practice/us/getMinuteData`, {
         params: { symbol: 'QQQ', date: date, interval: '5m' },
       })
-      .then((res) => setMinuteData(res.data))
+      .then((res) => {
+        setMinuteData(res.data)
+      })
   }
 
   return (
@@ -84,6 +112,8 @@ const USAnalysisTable = () => {
             params: { ...params, symbol: 'QQQ' },
           })
 
+          const allDate = res.data.map((item) => item.date)
+          setAllDate(allDate)
           const result = {
             data: res.data,
             row: res.data.length,
@@ -91,11 +121,22 @@ const USAnalysisTable = () => {
           }
           return result
         }}
-        pagination={{ showQuickJumper: true }}
+        toolBarRender={() => [
+          <Button
+            type="primary"
+            key="showAllDate"
+            onClick={() => {
+              showChart()
+            }}
+          >
+            显示全部图表
+          </Button>,
+        ]}
+        pagination={{ defaultPageSize: 10, showQuickJumper: true }}
       />
 
       <Drawer
-        title="Basic Drawer"
+        title="图表"
         placement={'left'}
         width={'50%'}
         closable={false}
@@ -107,6 +148,30 @@ const USAnalysisTable = () => {
           <UpdateStockData data={minuteData} highClass={'h-[550px]'} />
         )}
       </Drawer>
+
+      <Modal
+        title="全局概览"
+        open={openAll}
+        width={'100%'}
+        onCancel={() => {
+          closeChart()
+        }}
+        footer={null}
+      >
+        {allDate.length > 0 && (
+          <Row gutter={[16, 16]}>
+            {Object.keys(allDateData).map((date) => (
+              <Col span={8}>
+                {date}
+                <StockDataAnalysis
+                  data={allDateData[date]}
+                  highClass={'h-[300px]'}
+                />
+              </Col>
+            ))}
+          </Row>
+        )}
+      </Modal>
     </>
   )
 }
