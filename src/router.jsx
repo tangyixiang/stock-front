@@ -8,7 +8,6 @@ import SymbolAnalysis from './pages/SymbolAnalysis'
 import RealTimeVolTable from './components/RealTimeVolTable'
 import PankouChange from './pages/PankouChange'
 import USCompany from './pages/us/USCompany'
-import USSymbolAnalysis from './pages/us/USSymbolAnalysis'
 import USHome from './pages/us/USHome'
 import USQQQ from './pages/us/USQQQ'
 import UsPractice from './pages/practice/UsPractice'
@@ -36,7 +35,6 @@ const router = createHashRouter([
       { path: '/realtime/vol', element: <RealTimeVolTable /> },
       { path: '/pankou/change', element: <PankouChange /> },
       { path: '/us/symbol/list', element: <USCompany /> },
-      { path: '/us/symbol/analysis', element: <USSymbolAnalysis /> },
       { path: '/us/vol/analysis', element: <UsVolAnalysis /> },
       { path: '/us/analysis/qqq', element: <USQQQ /> },
       { path: '/us/analysis/qqq/period', element: <USQQQPeriod /> },

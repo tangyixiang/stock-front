@@ -34,7 +34,7 @@ function Choose() {
     axios
       .post('/api/tech/stock/choose', {
         marketType: marketType,
-        marketValue: 20,
+        marketValue: 10,
         name: [chooseType],
         date: today,
       })
@@ -50,9 +50,9 @@ function Choose() {
       })
   }, [marketType, chooseType])
 
-  const addAlaram = (values) => {
+  const addFocus = (values) => {
     axios
-      .post('/api/alarm/add', values)
+      .post('/api/focus/add', values)
       .then((res) => message.success('添加成功'))
   }
 
@@ -99,7 +99,7 @@ function Choose() {
                 boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
               }}
               extra={
-                <Form layout="inline" onFinish={addAlaram}>
+                <Form layout="inline" onFinish={addFocus}>
                   <Form.Item
                     name={'symbol'}
                     initialValue={item.symbol}
@@ -107,16 +107,9 @@ function Choose() {
                   >
                     <Input size="small" autoComplete="off" />
                   </Form.Item>
-                  <Form.Item name={'price'} label="提醒价格">
-                    <Input
-                      size="small"
-                      autoComplete="off"
-                      style={{ width: 60 }}
-                    />
-                  </Form.Item>
                   <Form.Item>
                     <Button size="small" type="primary" htmlType="submit">
-                      确认
+                      关注
                     </Button>
                   </Form.Item>
                 </Form>

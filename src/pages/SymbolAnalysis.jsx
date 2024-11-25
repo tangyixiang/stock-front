@@ -36,9 +36,11 @@ const SymbolAnalysis = (props) => {
   const onFinish = (values) => {
     if (values.symbolList) {
       values.symbolList = JSON.parse(values.symbolList)
+    } else {
+      values.symbolList = undefined
     }
     console.log(values)
-    axios.post('/api/cn/collection/symbol/data', values).then((res) => {
+    axios.post('/api/us/collection/symbol/data', values).then((res) => {
       setData(res.data)
     })
   }
@@ -114,9 +116,9 @@ const SymbolAnalysis = (props) => {
     setLoading(false)
   }
 
-  const addAlaram = (values) => {
+  const addFocus = (values) => {
     axios
-      .post('/api/alarm/add', values)
+      .post('/api/focus/add', values)
       .then((res) => message.success('添加成功'))
   }
 
@@ -162,7 +164,7 @@ const SymbolAnalysis = (props) => {
                 boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
               }}
               extra={
-                <Form layout="inline" onFinish={addAlaram}>
+                <Form layout="inline" onFinish={addFocus}>
                   <Form.Item
                     name={'symbol'}
                     initialValue={item.symbol}
@@ -170,16 +172,10 @@ const SymbolAnalysis = (props) => {
                   >
                     <Input size="small" autoComplete="off" />
                   </Form.Item>
-                  <Form.Item name={'price'} label="提醒价格">
-                    <Input
-                      size="small"
-                      autoComplete="off"
-                      style={{ width: 60 }}
-                    />
-                  </Form.Item>
+
                   <Form.Item>
                     <Button size="small" type="primary" htmlType="submit">
-                      确认
+                      关注
                     </Button>
                   </Form.Item>
                 </Form>
